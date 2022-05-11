@@ -12,13 +12,11 @@ CONFIG += c++17
 SOURCES += \
     appsettings.cpp \
     main.cpp \
-    mainwindow.cpp \
-    settings.cpp
+    mainwindow.cpp 
 
 HEADERS += \
     appsettings.h \
-    mainwindow.h \
-    settings.h
+    mainwindow.h 
 
 FORMS += \
     mainwindow.ui
