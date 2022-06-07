@@ -1,0 +1,10 @@
+{
+    "book1": {
+        "name": "high school mathematics",
+        "price": 12
+    },
+    "book2": {
+        "name": "advanced high school mathematics",
+        "price": 14
+    }
+}

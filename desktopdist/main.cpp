@@ -21,7 +21,7 @@ struct Book
     }
 };
 
-void CreateJson(const QString &path)
+void CreateJson( const QString &path )
 {
     Book obj1( "high school mathematics", 12 );
     QJsonObject book1;
@@ -44,7 +44,7 @@ void CreateJson(const QString &path)
     if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
         QTextStream iStream( &file );
-        iStream.setEncoding(QStringConverter::Utf8);
+        iStream.setEncoding( QStringConverter::Utf8 );
         iStream << bytes;
         file.close();
     }
@@ -54,7 +54,7 @@ void CreateJson(const QString &path)
     }
 }
 
-void ReadJson(const QString &path)
+void ReadJson( const QString &path )
 {
     QFile file( path );
     if( file.open( QIODevice::ReadOnly ) )
@@ -67,7 +67,7 @@ void ReadJson(const QString &path)
         if( jsonError.error != QJsonParseError::NoError )
         {
             cout << "fromJson failed: " << jsonError.errorString().toStdString() << endl;
-            return ;
+            return;
         }
         if( document.isObject() )
         {
@@ -99,22 +99,22 @@ void ReadJson(const QString &path)
     }
 }
 //"/home/gudjon/repo/rhatdist/build-desktopdist-Desktop_Qt_6_2_4_GCC_64bit-Debug/settings.json"
-int main(int argc, char *argv[])
+int main( int argc, char *argv[] )
 {
 
     /*
     Vill geta búið til grunn settings klasa sem vinnur með
     grunn setttings object
     sem aðrir klasar erfa og bæta við sínum eigin objectum
-    
+
     */
-    QApplication a(argc, argv);
+    QApplication a( argc, argv );
     MainWindow w;
 
     QString path=qApp->applicationDirPath(),
             settingsPath;
     //path="/home/gudjon/devel/qt/untitled3";
-    settingsPath=path+"/settings.json";
+    settingsPath=path + "/settings.json";
     qDebug() << "App path:" + path;
     qDebug() << "setting :" + settingsPath;
 
@@ -123,8 +123,8 @@ int main(int argc, char *argv[])
     qDebug() << "App path:" + path;
     qDebug() << "Settings:" + settingsPath;
 
-   CreateJson( settingsPath );
-   ReadJson( settingsPath );
+    CreateJson( settingsPath );
+    ReadJson( settingsPath );
     w.show();
     return a.exec();
 }
