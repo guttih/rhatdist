@@ -6,6 +6,7 @@
 
 #include <QApplication>
 
+#include "appsettings.h"
 
 
 using namespace std;
@@ -111,17 +112,23 @@ int main( int argc, char *argv[] )
     QApplication a( argc, argv );
     MainWindow w;
 
+
     QString path=qApp->applicationDirPath(),
             settingsPath;
+
     //path="/home/gudjon/devel/qt/untitled3";
     settingsPath=path + "/settings.json";
+    AppSettings settings(settingsPath.toStdString());
     qDebug() << "App path:" + path;
     qDebug() << "setting :" + settingsPath;
+    QString str= QString::fromStdString(settings.getFilePath());
+    qDebug() << "settings.getFilePath():" + str;
 
 
 
     qDebug() << "App path:" + path;
     qDebug() << "Settings:" + settingsPath;
+    qDebug() << "settings.getDirPath():" + str;
 
     CreateJson( settingsPath );
     ReadJson( settingsPath );
