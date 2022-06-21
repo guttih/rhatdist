@@ -7,7 +7,7 @@
 #include <QApplication>
 
 #include "appsettings.h"
-
+#include "JsonSave.h"
 
 using namespace std;
 
@@ -112,16 +112,18 @@ int main( int argc, char *argv[] )
     QApplication a( argc, argv );
     MainWindow w;
 
+    JsonSave xx;
+    xx.i=4;
 
     QString path=qApp->applicationDirPath(),
             settingsPath;
 
     //path="/home/gudjon/devel/qt/untitled3";
     settingsPath=path + "/settings.json";
-    AppSettings settings(settingsPath.toStdString());
+    AppSettings settings( settingsPath.toStdString() );
     qDebug() << "App path:" + path;
     qDebug() << "setting :" + settingsPath;
-    QString str= QString::fromStdString(settings.getFilePath());
+    QString str= QString::fromStdString( settings.getFilePath() );
     qDebug() << "settings.getFilePath():" + str;
 
 

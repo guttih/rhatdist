@@ -1,3 +1,0 @@
-{
-    "cpp.gepper.shellExecute.OnSave.Command": "/home/gudjon/repos/bin/uncrust.sh \"{{__FILE_PATH__}}\" \"{{__FILE_NAME__}}\""
-}
