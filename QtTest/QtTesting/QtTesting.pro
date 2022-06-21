@@ -12,10 +12,12 @@ DEPENDPATH += $$SRC
 TEMPLATE = app
 
 SOURCES += \
+        $$SRC_RELATIVE/JSAppSettings.cpp \
         $$SRC_RELATIVE/JsonSave.cpp \
         $$SRC_RELATIVE/appsettings.cpp \
         tst_test_jsonsave.cpp
 HEADERS += \
+        $$SRC_RELATIVE/JSAppSettings.h \
         $$SRC_RELATIVE/JsonSave.h \
         $$SRC_RELATIVE/appsettings.h \
 
