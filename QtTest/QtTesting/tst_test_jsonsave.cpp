@@ -2,7 +2,9 @@
 #include <QCoreApplication>
 #include "appsettings.h"
 #include "JsonSave.h"
-#include "JSAppSettings.h"
+#include "JsonSaveMany.h"
+#include "Student.h"
+#include "JStudent.h"
 // add necessary includes here
 
 class test_JsonSave : public QObject
@@ -58,8 +60,10 @@ void test_JsonSave::test_case1()
 void test_JsonSave::test_case2()
 {
     JsonSave xxx;
-    JSAppSettings jas;
-
+    JsonSaveMany jas;
+    Student me( "Gudjon", 50 );
+    JStudent jMe( me );
+    qDebug( jMe.toString().c_str() );
     xxx.i=444;
     QVERIFY( 444 == xxx.i );
 }

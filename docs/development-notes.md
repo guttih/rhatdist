@@ -5,6 +5,13 @@ Some notes used when developing
 
 ### test project
 
+Want to make a class which will allow you to save data to disk on a json format.
+
+- **Student** The data class
+    
+- **JStudent** Class which can save one *Student* values to disk
+- **JStudents** Class which can save many *Student*s to disk
+
 - test.pro
     ```
     INCLUDEPATH += $$PWD/../../desktopdist
