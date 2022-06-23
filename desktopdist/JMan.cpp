@@ -4,19 +4,14 @@
 #include "String.h"
  #include <fstream>
 
-JMan::JMan( const char *filename )
+JMan::JMan( const char *filename ) : JFile( filename )
 {
-    _filename = filename;
+
 }
 
 JMan::~JMan()
 {
 
-}
-
-std::string JMan::getFilename()
-{
-    return _filename;
 }
 
 bool JMan::load()
@@ -42,34 +37,6 @@ bool JMan::load()
 
 }
 
-String JMan::fileToString( String filename )
-{
-    ifstream inFile;
-    inFile.open( filename.c_str() ); //open the input file
-
-    stringstream strStream;
-    strStream << inFile.rdbuf(); //read the file
-
-    return strStream.str().c_str();
-
-}
-
-String JMan::toJsonValuePair( String name, String value )
-{
-    String str="\"";
-    str+=name + "\":\"";
-    str+=value + "\"";
-    return str;
-}
-
-String JMan::toJsonValuePair( String name, long value )
-{
-    String str="\"";
-    str+=name + "\":";
-    str+=std::to_string( value );
-    return str;
-}
-
 String JMan::toString()
 {
     String str="{";
@@ -79,11 +46,4 @@ String JMan::toString()
     return str;
 }
 
-bool JMan::save()
-{
-    FILE * fp;
-    fp = fopen( getFilename().c_str(), "w" );
-    fprintf( fp, "%s ", toString().c_str() );
-    fclose( fp );
-}
 

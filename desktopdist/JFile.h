@@ -10,16 +10,17 @@ class JFile
 {
 public:
     JFile( const char *filename );
-    ~JFile();
+    virtual ~JFile();
     std::string getFilename();
     std::string _name;
     int _age;
-    bool load();
-    bool save();
-    String toString();
-private:
+    virtual bool save();
+    virtual bool load() = 0;
+    virtual String toString() = 0;
+
+protected:
     std::string _filename;
-    String fileToString( String filename );
+    virtual String fileToString( String filename );
     String toJsonValuePair( String name, String value );
     String toJsonValuePair( String name, long value );
 

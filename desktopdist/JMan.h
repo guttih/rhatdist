@@ -5,23 +5,17 @@
 
 #include <iostream>
 #include "String.h"
+#include "JFile.h"
 
-class JMan
+class JMan : public JFile
 {
 public:
     JMan( const char *filename );
-    ~JMan();
-    std::string getFilename();
+    virtual ~JMan();
     std::string _name;
     int _age;
     bool load();
-    bool save();
-    String toString();
-private:
-    std::string _filename;
-    String fileToString( String filename );
-    String toJsonValuePair( String name, String value );
-    String toJsonValuePair( String name, long value );
+    virtual String toString();
 
 };
 

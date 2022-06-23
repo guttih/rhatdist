@@ -31,8 +31,7 @@ private slots:
     void test_case1();
     void test_case2();
     void test_readJsonExampleFile();
-    void test_JFile();
-    void test_JMan();
+    void test_JMan_SaveAndLoad();
 };
 
 test_JsonSave::test_JsonSave()
@@ -63,7 +62,7 @@ void test_JsonSave::test_case1()
 
     settingsPath=path + "/settings.json";
     AppSettings settings( settingsPath.toStdString() );
-    qDebug(  "Path : %s", settings.getFilePath().c_str() );
+    // qDebug(  "Path : %s", settings.getFilePath().c_str() );
     test = settings.getFilePath().c_str();
     QVERIFY( test.endsWith( "/settings.json" ) );
     // QCOMPARE( settings.getFilePath(), "/settings.json" );
@@ -123,39 +122,18 @@ void test_JsonSave::test_readJsonExampleFile()
     // qDebug( "json=%s", json.toTree().c_str() );
 }
 
-void test_JsonSave::test_JFile()
-{
-    QString filename=qApp->applicationDirPath() + "/../jfile.json";
-    JFile man( filename.toStdString().c_str() );
-    QCOMPARE( man.getFilename(), filename.toStdString() );
-
-    QFile file( filename  );
-    if( QFileInfo::exists( filename ) )
-        file.remove();
-
-    qDebug( "Filename: %s\n", man.getFilename().c_str() );
-    man._name="Gudjon";
-    man._age=50;
-    man.save();
-    man._name="";
-    man._age=0;
-    man.load();
-    QCOMPARE( man._name, "Gudjon" );
-    QVERIFY( man._age == 50 );
-
-}
-
-void test_JsonSave::test_JMan()
+void test_JsonSave::test_JMan_SaveAndLoad()
 {
     QString filename=qApp->applicationDirPath() + "/../jman.json";
     JMan man( filename.toStdString().c_str() );
+    // qDebug( "Filename: %s\n", man.getFilename().c_str() );
+
     QCOMPARE( man.getFilename(), filename.toStdString() );
 
     QFile file( filename  );
     if( QFileInfo::exists( filename ) )
         file.remove();
 
-    qDebug( "Filename: %s\n", man.getFilename().c_str() );
     man._name="Gudjon";
     man._age=50;
     man.save();
