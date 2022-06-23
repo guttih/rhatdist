@@ -55,5 +55,4 @@ desktopdist/desktopdist
 # guðjón
 *.qtc_clangd
 *.log
-
-
+QtTest/*.json
