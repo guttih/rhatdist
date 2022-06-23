@@ -9,6 +9,7 @@
 #include "String.h"
 #include "Json.h"
 #include "JMan.h"
+#include "JFile.h"
   #include <fstream>
 
 // add necessary includes here
@@ -30,6 +31,7 @@ private slots:
     void test_case1();
     void test_case2();
     void test_readJsonExampleFile();
+    void test_JFile();
     void test_JMan();
 };
 
@@ -119,6 +121,28 @@ void test_JsonSave::test_readJsonExampleFile()
     Json json( fileToString( path.toStdString().c_str() ).c_str() );
     QVERIFY( json.isValid() );
     // qDebug( "json=%s", json.toTree().c_str() );
+}
+
+void test_JsonSave::test_JFile()
+{
+    QString filename=qApp->applicationDirPath() + "/../jfile.json";
+    JFile man( filename.toStdString().c_str() );
+    QCOMPARE( man.getFilename(), filename.toStdString() );
+
+    QFile file( filename  );
+    if( QFileInfo::exists( filename ) )
+        file.remove();
+
+    qDebug( "Filename: %s\n", man.getFilename().c_str() );
+    man._name="Gudjon";
+    man._age=50;
+    man.save();
+    man._name="";
+    man._age=0;
+    man.load();
+    QCOMPARE( man._name, "Gudjon" );
+    QVERIFY( man._age == 50 );
+
 }
 
 void test_JsonSave::test_JMan()
