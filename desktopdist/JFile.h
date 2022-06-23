@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include "String.h"
+#include "JsonData.h"
+#include "Json.h"
 
 class JFile
 {

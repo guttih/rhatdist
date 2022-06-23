@@ -113,7 +113,7 @@ int main( int argc, char *argv[] )
     MainWindow w;
 
     JsonSave xx;
-    xx.i=4;
+
 
     QString path=qApp->applicationDirPath(),
             settingsPath;

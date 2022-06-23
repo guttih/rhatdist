@@ -3,21 +3,17 @@
 
 #pragma once
 
-#include "Student.h"
-#include "JsonSave.h"
-
-class JStudent : JsonSave
+#include "JMan.h"
+class JStudent : public JMan
 {
 public:
-    JStudent();
-    JStudent( Student data );
+    JStudent( const char *filename );
     ~JStudent();
-
-    void set( const Student &student );
-    std::string toString();
+    bool load();
+    virtual String toString();
+    int _enrolled;
 
 private:
-    Student _data;
 
 };
 

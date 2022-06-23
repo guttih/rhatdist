@@ -1,14 +1,12 @@
 #include <QtTest>
 #include <QCoreApplication>
 #include "appsettings.h"
-#include "JsonSave.h"
-#include "JsonSaveMany.h"
-#include "Student.h"
 #include "Book.h"
 #include "JStudent.h"
 #include "String.h"
 #include "Json.h"
 #include "JMan.h"
+#include "JStudent.h"
 #include "JFile.h"
   #include <fstream>
 
@@ -29,9 +27,9 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
     void test_case1();
-    void test_case2();
     void test_readJsonExampleFile();
     void test_JMan_SaveAndLoad();
+    void test_JStudent_SaveAndLoad();
 };
 
 test_JsonSave::test_JsonSave()
@@ -66,39 +64,6 @@ void test_JsonSave::test_case1()
     test = settings.getFilePath().c_str();
     QVERIFY( test.endsWith( "/settings.json" ) );
     // QCOMPARE( settings.getFilePath(), "/settings.json" );
-}
-
-void test_JsonSave::test_case2()
-{
-    /*
-    Book     <- IJsonSaveData
-    Student  <- IJsonSaveData
-
-    JBook    <- JsonSave
-    JStudent <- JsonSave
-
-    JBook    uses Book
-    JStudent uses Student
-
-    JDisk <Book>.
-    JStudent.load();
-    JStudent.save();
-    JBook.load();
-    JBook.save();
-
-
-
-
-    */
-    // JsonSaveMany jas;
-    // Student me( "Gudjon", 50 );
-    // Book bk( "Gone with the wind", 33 );
-    // JStudent jMe( me );
-    // qDebug( "Student::toString()=%s", me.toString().c_str() );
-    // qDebug( "Book::toString()=%s", bk.toString().c_str() );
-    // QCOMPARE( me._name.c_str(), "Gudjon" );
-    // QVERIFY( me._age == 50 );
-    // QCOMPARE( me.toString().c_str(), "Gudjon;50" );
 }
 
 String test_JsonSave::fileToString( String fullFilePath )
@@ -142,6 +107,32 @@ void test_JsonSave::test_JMan_SaveAndLoad()
     man.load();
     QCOMPARE( man._name, "Gudjon" );
     QVERIFY( man._age == 50 );
+
+}
+
+void test_JsonSave::test_JStudent_SaveAndLoad()
+{
+    QString filename=qApp->applicationDirPath() + "/../jstudent.json";
+    JStudent obj( filename.toStdString().c_str() );
+    // qDebug( "Filename: %s\n", man.getFilename().c_str() );
+
+    QCOMPARE( obj.getFilename(), filename.toStdString() );
+
+    QFile file( filename  );
+    if( QFileInfo::exists( filename ) )
+        file.remove();
+
+    obj._name="Gudjon";
+    obj._age=50;
+    obj._enrolled=2024;
+    obj.save();
+    obj._name="";
+    obj._age=0;
+    obj._enrolled=22;
+    obj.load();
+    QCOMPARE( obj._name, "Gudjon" );
+    QVERIFY( obj._age == 50 );
+    QVERIFY( obj._enrolled == 2024 );
 
 }
 

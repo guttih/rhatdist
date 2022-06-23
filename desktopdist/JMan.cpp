@@ -17,9 +17,12 @@ JMan::~JMan()
 bool JMan::load()
 {
     Json json( fileToString( _filename.c_str() ).c_str() );
+
     if( !json.isValid() )
         return false;
+
     JsonData *root=json.getRootObject();
+
     if( !root )
         return false;
 
