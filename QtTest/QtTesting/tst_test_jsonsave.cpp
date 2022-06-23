@@ -1,10 +1,7 @@
 #include <QtTest>
 #include <QCoreApplication>
-#include "appsettings.h"
-#include "Book.h"
 #include "JStudent.h"
 #include "String.h"
-#include "Json.h"
 #include "JMan.h"
 #include "JStudent.h"
 #include "JFile.h"
@@ -26,7 +23,6 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void test_case1();
     void test_readJsonExampleFile();
     void test_JMan_SaveAndLoad();
     void test_JStudent_SaveAndLoad();
@@ -51,19 +47,6 @@ void test_JsonSave::initTestCase()
 void test_JsonSave::cleanupTestCase()
 {
 
-}
-
-void test_JsonSave::test_case1()
-{
-    QString path=qApp->applicationDirPath(),
-            settingsPath, test;
-
-    settingsPath=path + "/settings.json";
-    AppSettings settings( settingsPath.toStdString() );
-    // qDebug(  "Path : %s", settings.getFilePath().c_str() );
-    test = settings.getFilePath().c_str();
-    QVERIFY( test.endsWith( "/settings.json" ) );
-    // QCOMPARE( settings.getFilePath(), "/settings.json" );
 }
 
 String test_JsonSave::fileToString( String fullFilePath )

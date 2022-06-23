@@ -18,7 +18,6 @@ SOURCES += \
         $$SRC_RELATIVE/Json.cpp \
         $$SRC_RELATIVE/JsonData.cpp \
         $$SRC_RELATIVE/JStudent.cpp \
-        $$SRC_RELATIVE/appsettings.cpp \
         tst_test_jsonsave.cpp
 HEADERS += \
         $$SRC_RELATIVE/JFile.h \
@@ -27,7 +26,6 @@ HEADERS += \
         $$SRC_RELATIVE/Json.h \
         $$SRC_RELATIVE/JsonData.h \
         $$SRC_RELATIVE/JStudent.h \
-        $$SRC_RELATIVE/appsettings.h \
 
 message("============================================================")
 message("Build time   : $$NOW")
