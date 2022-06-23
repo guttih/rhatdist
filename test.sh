@@ -20,5 +20,6 @@ buildAndRunTests(){
 
 PARENT_DIR=$(getScriptPath)
 DIR="$PARENT_DIR/QtTest/build-QtTesting-Desktop-Debug"
+reset
 echo "DIR:$DIR"
 cd "$DIR" && buildAndRunTests

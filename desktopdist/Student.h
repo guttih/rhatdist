@@ -1,9 +1,9 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
-#include "JsonSaveData.h"
+#include "IJsonSaveData.h"
 
-class Student : JsonSaveData
+class Student : public IJsonSaveData
 {
 public:
     std::string _name;
@@ -12,8 +12,8 @@ public:
     Student( const Student &student );
     Student( std::string name, int age );
     void set( std::string name, int age );
-    std::string toString();
-    ~Student();
+    virtual std::string toString() const;
+    virtual ~Student();
 
 private:
 

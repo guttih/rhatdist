@@ -4,12 +4,20 @@
 #include "JsonSave.h"
 #include "JsonSaveMany.h"
 #include "Student.h"
+#include "Book.h"
 #include "JStudent.h"
+ #include "String.h"
+  #include "Json.h"
+  #include <fstream>
+
 // add necessary includes here
 
 class test_JsonSave : public QObject
 {
 Q_OBJECT
+
+private:
+    String fileToString( String fullFilePath );
 
 public:
     test_JsonSave();
@@ -20,6 +28,7 @@ private slots:
     void cleanupTestCase();
     void test_case1();
     void test_case2();
+    void test_readJsonExampleFile();
 
 };
 
@@ -59,13 +68,56 @@ void test_JsonSave::test_case1()
 
 void test_JsonSave::test_case2()
 {
-    JsonSave xxx;
-    JsonSaveMany jas;
-    Student me( "Gudjon", 50 );
-    JStudent jMe( me );
-    qDebug( jMe.toString().c_str() );
-    xxx.i=444;
-    QVERIFY( 444 == xxx.i );
+    /*
+    Book     <- IJsonSaveData
+    Student  <- IJsonSaveData
+
+    JBook    <- JsonSave
+    JStudent <- JsonSave
+
+    JBook    uses Book
+    JStudent uses Student
+
+    JDisk <Book>.
+    JStudent.load();
+    JStudent.save();
+    JBook.load();
+    JBook.save();
+
+
+
+
+    */
+    // JsonSaveMany jas;
+    // Student me( "Gudjon", 50 );
+    // Book bk( "Gone with the wind", 33 );
+    // JStudent jMe( me );
+    // qDebug( "Student::toString()=%s", me.toString().c_str() );
+    // qDebug( "Book::toString()=%s", bk.toString().c_str() );
+    // QCOMPARE( me._name.c_str(), "Gudjon" );
+    // QVERIFY( me._age == 50 );
+    // QCOMPARE( me.toString().c_str(), "Gudjon;50" );
+}
+
+String test_JsonSave::fileToString( String fullFilePath )
+{
+    ifstream inFile;
+    inFile.open( fullFilePath.c_str() ); //open the input file
+
+    stringstream strStream;
+    strStream << inFile.rdbuf(); //read the file
+
+    return strStream.str().c_str();
+
+}
+
+void test_JsonSave::test_readJsonExampleFile()
+{
+    QString path=qApp->applicationDirPath() + "/../example7.json";
+    // qDebug( "Reading file %s\n", path.toStdString().c_str() );
+    Json json( fileToString( path.toStdString().c_str() ).c_str() );
+    QVERIFY( json.isValid() );
+    // qDebug( "json=%s", json.toTree().c_str() );
 }
 
 QTEST_MAIN( test_JsonSave )

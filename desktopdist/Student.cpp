@@ -25,7 +25,7 @@ void Student::set( std::string name, int age )
     _age=age;
 }
 
-std::string Student::toString()
+std::string Student::toString() const
 {
 
     std::string str=_name;
