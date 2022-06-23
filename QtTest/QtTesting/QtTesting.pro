@@ -12,6 +12,7 @@ DEPENDPATH += $$SRC
 TEMPLATE = app
 
 SOURCES += \
+        $$SRC_RELATIVE/JMan.cpp \
         $$SRC_RELATIVE/String.cpp \
         $$SRC_RELATIVE/Json.cpp \
         $$SRC_RELATIVE/JsonData.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
         $$SRC_RELATIVE/appsettings.cpp \
         tst_test_jsonsave.cpp
 HEADERS += \
+        $$SRC_RELATIVE/JMan.h \
         $$SRC_RELATIVE/String.h \
         $$SRC_RELATIVE/Json.h \
         $$SRC_RELATIVE/JsonData.h \
