@@ -54,17 +54,36 @@ String JMan::fileToString( String filename )
 
 }
 
+String JMan::toJsonValuePair( String name, String value )
+{
+    String str="\"";
+    str+=name + "\":\"";
+    str+=value + "\"";
+    return str;
+}
+
+String JMan::toJsonValuePair( String name, long value )
+{
+    String str="\"";
+    str+=name + "\":";
+    str+=std::to_string( value );
+    return str;
+}
+
+String JMan::toString()
+{
+    String str="{";
+    str+=toJsonValuePair( "name", _name ) + ",";
+    str+=toJsonValuePair( "age", _age );
+    str+="}";
+    return str;
+}
+
 bool JMan::save()
 {
-    String str="{\"name\":\"";
-    str+=_name;
-    str+="\",\"age\":";
-    str+=std::to_string( _age );
-    str+="}";
-
     FILE * fp;
     fp = fopen( getFilename().c_str(), "w" );
-    fprintf( fp, "%s ", str.c_str() );
+    fprintf( fp, "%s ", toString().c_str() );
     fclose( fp );
 }
 

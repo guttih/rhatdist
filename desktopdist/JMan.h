@@ -16,10 +16,12 @@ public:
     int _age;
     bool load();
     bool save();
-
+    String toString();
 private:
     std::string _filename;
     String fileToString( String filename );
+    String toJsonValuePair( String name, String value );
+    String toJsonValuePair( String name, long value );
 
 };
 
