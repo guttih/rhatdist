@@ -6,6 +6,8 @@
 #include "JStudent.h"
 #include "JFile.h"
   #include <fstream>
+#include "Person.h"
+#include "JsonFile.h"
 
 // add necessary includes here
 
@@ -26,6 +28,7 @@ private slots:
     void test_readJsonExampleFile();
     void test_JMan_SaveAndLoad();
     void test_JStudent_SaveAndLoad();
+    void test_Person_SaveAndLoad();
 };
 
 test_JsonSave::test_JsonSave()
@@ -95,6 +98,38 @@ void test_JsonSave::test_JMan_SaveAndLoad()
 
 void test_JsonSave::test_JStudent_SaveAndLoad()
 {
+    /*
+        class IJData {
+            public
+                read
+                virtual bool setFromJson(const char *jsonString)=0;
+                virtual CString toJsonString() = 0
+        };
+
+        class AbstractJData : IJData{
+            public
+                read
+                virtual bool setFromJson(const char *jsonString)=0;
+                virtual CString toJsonString() = 0
+        };
+
+        class Student : JAbstractData {
+            public
+                read
+                bool setFromJson(const char *jsonString)=0;
+                CString toJsonString() = 0
+        };
+
+        JFile JFile("student.json");
+        CString str=student.fileToString();
+
+        Person inherits JData
+            Father inherits Person
+            Child inherits Person
+        JData
+
+
+    */
     QString filename=qApp->applicationDirPath() + "/../jstudent.json";
     JStudent obj( filename.toStdString().c_str() );
     // qDebug( "Filename: %s\n", man.getFilename().c_str() );
@@ -117,6 +152,21 @@ void test_JsonSave::test_JStudent_SaveAndLoad()
     QVERIFY( obj._age == 50 );
     QVERIFY( obj._enrolled == 2024 );
 
+
+}
+
+void test_JsonSave::test_Person_SaveAndLoad()
+{
+    Person person;
+
+    person._name="Gudjon"; person._age=51;
+    JsonFile jf( "person.json", ( AbstractJData* ) &person );
+    qDebug( "json:%s\n", jf.toJsonString().c_str() );
+    // jf.save();
+    // person._name=""; person._age=0;
+    // jf.load();
+    // QCOMPARE( person._name, "Gudjon" );
+    // QVERIFY( person._age == 50 );
 }
 
 QTEST_MAIN( test_JsonSave )
