@@ -161,12 +161,12 @@ void test_JsonSave::test_Person_SaveAndLoad()
 
     person._name="Gudjon"; person._age=51;
     JsonFile jf( "person.json", ( AbstractJData* ) &person );
-    qDebug( "json:%s\n", jf.toJsonString().c_str() );
-    // jf.save();
-    // person._name=""; person._age=0;
-    // jf.load();
-    // QCOMPARE( person._name, "Gudjon" );
-    // QVERIFY( person._age == 50 );
+    // qDebug( "json:%s\n", jf.toJsonString().c_str() );
+    QVERIFY( jf.save() );
+    person._name=""; person._age=0;
+    jf.load();
+    QCOMPARE( person._name, "Gudjon" );
+    QVERIFY( person._age == 51 );
 }
 
 QTEST_MAIN( test_JsonSave )

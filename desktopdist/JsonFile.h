@@ -12,6 +12,9 @@ public:
     ~JsonFile();
     std::string getFilename();
     std::string toJsonString();
+    std::string fileToString( const char *fileName );
+    bool save();
+    bool load();
 
 private:
     std::string _filename;
