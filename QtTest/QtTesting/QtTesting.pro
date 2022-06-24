@@ -13,6 +13,7 @@ TEMPLATE = app
 
 SOURCES += \
         $$SRC_RELATIVE/JsonFile.cpp \
+        $$SRC_RELATIVE/Persons.cpp \
         $$SRC_RELATIVE/Person.cpp \
         $$SRC_RELATIVE/AbstractJData.cpp \
         $$SRC_RELATIVE/String.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
         tst_test_jsonsave.cpp
 HEADERS += \
         $$SRC_RELATIVE/JsonFile.h \
+        $$SRC_RELATIVE/Persons.h \
         $$SRC_RELATIVE/Person.h \
         $$SRC_RELATIVE/AbstractJData.h \
         $$SRC_RELATIVE/IJData.h \

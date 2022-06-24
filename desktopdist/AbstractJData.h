@@ -1,9 +1,10 @@
 #ifndef ABSTRACTJDATA_H
 #define ABSTRACTJDATA_H
 
-#pragma once
+// #pragma once
 
 #include "IJData.h"
+#include "NotImplementedException.h"
 #include <iostream>
 class AbstractJData : public IJData
 {

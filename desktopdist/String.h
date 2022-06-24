@@ -58,7 +58,6 @@ public:
         << std::hex << number;
         mStr = stream.str();
     }
-    //String substring(int start, int count) {
     String substring( int start, int to )
     {
         return String( substringHelper( start, to - start ) );

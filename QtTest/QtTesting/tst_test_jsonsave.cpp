@@ -2,7 +2,10 @@
 #include <QCoreApplication>
 #include <fstream>
 #include "Person.h"
+#include "Persons.h"
 #include "JsonFile.h"
+#include "String.h"
+
 
 // add necessary includes here
 
@@ -22,6 +25,11 @@ private slots:
     void cleanupTestCase();
     void test_readJsonExampleFile();
     void test_Person_SaveAndLoad();
+    void Persons_SetAndGet();
+    void Persons_SaveAndLoad();
+    void Persons_AddAndSave();
+    void Persons_RemoveAndSave();
+    void Persons_Itterate();
 };
 
 test_JsonSave::test_JsonSave()
@@ -66,33 +74,6 @@ void test_JsonSave::test_readJsonExampleFile()
     // qDebug( "json=%s", json.toTree().c_str() );
 }
 
-// void test_JsonSave::test_JStudent_SaveAndLoad()
-// {
-//     QString filename=qApp->applicationDirPath() + "/../jstudent.json";
-//     JStudent obj( filename.toStdString().c_str() );
-//     // qDebug( "Filename: %s\n", man.getFilename().c_str() );
-
-//     QCOMPARE( obj.getFilename(), filename.toStdString() );
-
-//     QFile file( filename  );
-//     if( QFileInfo::exists( filename ) )
-//         file.remove();
-
-//     obj._name="Gudjon";
-//     obj._age=50;
-//     obj._enrolled=2024;
-//     obj.save();
-//     obj._name="";
-//     obj._age=0;
-//     obj._enrolled=22;
-//     obj.load();
-//     QCOMPARE( obj._name, "Gudjon" );
-//     QVERIFY( obj._age == 50 );
-//     QVERIFY( obj._enrolled == 2024 );
-
-
-// }
-
 void test_JsonSave::test_Person_SaveAndLoad()
 {
     Person person;
@@ -103,6 +84,112 @@ void test_JsonSave::test_Person_SaveAndLoad()
     QVERIFY( jf.load() );
     QCOMPARE( person._name, "Gudjon" );
     QVERIFY( person._age == 51 );
+}
+
+void test_JsonSave::Persons_SetAndGet()
+{
+    Persons persons;
+    QVERIFY( persons.count() == 0 );
+    String orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
+    QVERIFY( persons.setFromJson( orgJsonStr.c_str() ) == true );
+    QVERIFY( persons.count() == 2 );
+    QCOMPARE( persons.toJsonString().c_str(), orgJsonStr.c_str() );
+
+}
+void test_JsonSave::Persons_SaveAndLoad()
+{
+    QString filename="persons.json";
+    QFile file( filename  );
+    if( QFileInfo::exists( filename ) )
+        file.remove();
+
+    Persons persons;
+    QVERIFY( persons.count() == 0 );
+    std::string orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
+    persons.setFromJson( orgJsonStr.c_str() );
+
+    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJData* ) &persons );
+    jFile.save();
+
+    Persons perTest;
+    JsonFile jFile2( filename.toStdString().c_str(), ( AbstractJData* ) &perTest );
+    jFile2.load();
+    QVERIFY( persons.count() == 2 );
+}
+
+void test_JsonSave::Persons_AddAndSave()
+{
+    QString filename="persons.json";
+    /*  QFile file( filename  );
+     if( QFileInfo::exists( filename ) )
+         file.remove();
+ */
+    Persons persons;
+    Person p;
+    p._name="Sigurborg"; p._age=45;
+    QVERIFY( persons.count() == 0 );
+    persons.addItem( p );
+    QVERIFY( persons.count() == 1 );
+    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJData* ) &persons );
+    jFile.save();
+
+    Persons perTest;
+    JsonFile jFile2( filename.toStdString().c_str(), ( AbstractJData* ) &perTest );
+    jFile2.load();
+    QVERIFY( persons.count() == 1 );
+}
+
+void test_JsonSave::Persons_RemoveAndSave()
+{
+    Persons_AddAndSave();
+    Persons persons;
+    QVERIFY( persons.count() == 0 );
+    QString filename="persons.json";
+    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJData* ) &persons );
+    jFile.load();
+    QVERIFY( persons.count() == 1 );
+    Person removeMe( "Sigurborg", 45 );
+    persons.RemoveItem( removeMe );
+    QVERIFY( persons.count() == 0 );
+    jFile.load();
+    Person perTwo( "Gudjon", 51 );
+    persons.addItem( perTwo );
+    jFile.save();
+    jFile.load();
+    QVERIFY( persons.count() == 2 );
+    persons.RemoveItem( perTwo );
+    QVERIFY( persons.count() == 1 );
+    persons.RemoveItem( removeMe );
+    QVERIFY( persons.count() == 0 );
+}
+
+
+void test_JsonSave::Persons_Itterate()
+{
+    Persons_AddAndSave();
+    Persons persons;
+    persons.addItem( Person( "One", 1 ) );
+    persons.addItem( Person( "Two", 2 ) );
+    persons.addItem( Person( "Three", 3 ) );
+    QVERIFY( persons.count() == 3 );
+    Person tmp;
+    QVERIFY( persons.getFirstItem( &tmp ) );
+    QCOMPARE( tmp._name.c_str(), "One" );
+    QVERIFY( tmp._age == 1 );
+
+    QVERIFY( persons.getNextItem( &tmp ) );
+    QCOMPARE( tmp._name.c_str(), "Two" );
+    ( tmp._age == 2 );
+
+    QVERIFY( persons.getNextItem( &tmp ) );
+    QCOMPARE( tmp._name.c_str(), "Three" );
+    QVERIFY( tmp._age == 3 );
+
+    QVERIFY( persons.getNextItem( &tmp ) == false );
+    QCOMPARE( tmp._name.c_str(), "Three" );
+    QVERIFY( tmp._age == 3 );
+
+
 }
 
 QTEST_MAIN( test_JsonSave )
