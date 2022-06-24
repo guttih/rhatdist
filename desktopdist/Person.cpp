@@ -32,7 +32,7 @@ bool Person::setFromJson( const char *jsonString )
         if( !child || child->getType() != JSONTYPE::JSONTYPE_KEY_VALUE )
             return false;
         _name= child->getValueAsString().c_str();
-        child=root->getChild( "agex" );
+        child=root->getChild( "age" );
         if( !child || child->getType() != JSONTYPE::JSONTYPE_KEY_VALUE )
             return false;
         _age= child->getValueAsInt();
