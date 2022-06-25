@@ -76,12 +76,6 @@ void test_JsonSave::test_readJsonExampleFile()
 void test_JsonSave::test_Person_SaveAndLoad()
 {
     Person person;
-    String str=String( ( long int ) -7, NUMBER_TYPE::HEX );
-
-    qDebug( "--------------------------------------" );
-    qDebug( "DEG: %s", String( ( long int ) 17, NUMBER_TYPE::DEC ).c_str() );
-    qDebug( "HEX: %s", String( ( long int ) 17, NUMBER_TYPE::HEX ).c_str() );
-    qDebug( "BIN: %s", String( ( long int ) 17, NUMBER_TYPE::BIN ).c_str() );
     person._name="Gudjon"; person._age=51;
     JsonFile jf( "person.json", ( AbstractJsonFileData* ) &person );
     QVERIFY( jf.save() );

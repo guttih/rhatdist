@@ -22,7 +22,7 @@ bool Persons::setFromJson( const char *jsonString )
     if( !root || root->getType() != JSONTYPE::JSONTYPE_ARRAY )
         return false;
 
-    JsonData *child, *prop;
+    JsonData *child;
     Person tmp;
     child=root->getChildAt( 0 );
     _list.clear();
@@ -67,7 +67,7 @@ void Persons::clearData()
     return _list.clear();
 }
 
-bool Persons::addItem( Person const person )
+void Persons::addItem( Person const person )
 {
     _list.push_back( person );
 }

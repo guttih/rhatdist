@@ -15,7 +15,7 @@ public:
 
     unsigned int count();
     void clearData();
-    bool addItem( Person const person );
+    void addItem( Person const person );
     bool RemoveItem( Person const person );
     bool getFirstItem( Person *person );
     bool getNextItem( Person *person );

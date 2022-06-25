@@ -65,7 +65,3 @@ String Person::toJsonString()
     return str;
 }
 
-String Person::toTree()
-{
-    return Json( toJsonString().c_str() ).toTree();
-}

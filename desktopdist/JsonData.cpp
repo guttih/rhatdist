@@ -656,7 +656,6 @@ JsonData *JsonData::pair( String *keyValues, JsonData *parent )
     String strKeyX = keyValues->substring( keyIndexOfFirstChar, keyIndexOfFirstChar + keyLength );
     String strValX = keyValues->substring( valueIndexOfFirstChar, valueIndexOfFirstChar + valueLength );
     JSONTYPE valType = getValueTypeFromChar( strValX.charAt( 0 ) );
-    bool isStringValue = valType == JSONTYPE_STRING;
 
     if( valType == JSONTYPE_INVALID )
         return setRootInvalid();
@@ -676,9 +675,6 @@ JsonData *JsonData::pair( String *keyValues, JsonData *parent )
 /// <returns></returns>
 bool JsonData::validateValue( const JSONTYPE jsonValueType, String stringValue )
 {
-    if( jsonValueType == JSONTYPE_STRING )
-        return true; //all strings are valid
-
     //todo:: use JSONTYPE instead
     switch( jsonValueType )
     {
@@ -698,6 +694,10 @@ bool JsonData::validateValue( const JSONTYPE jsonValueType, String stringValue )
             return JSONTYPE_NULL == getType( stringValue );
         case JSONTYPE_KEY_VALUE:
             return true;
+        case JSONTYPE_STRING:
+            return true;
+        case JSONTYPE_INVALID:
+            return false;
     }
 
     return false;
@@ -891,6 +891,8 @@ String JsonData::jsonTypeString( const JSONTYPE type )
             return "JSONTYPE_BOOL";
         case JSONTYPE_NULL:
             return "JSONTYPE_NULL";
+        case JSONTYPE_INVALID:
+            return "JSONTYPE_INVALID";
     }
 
     return "JSONTYPE_INVALID";
