@@ -16,6 +16,7 @@ public:
     virtual String toJsonString();
     virtual ~Person();
     static bool getValues( JsonData *child, Person &storeValuesHere );
+    String toTree();
 
 private:
 

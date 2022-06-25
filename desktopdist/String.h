@@ -6,7 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <iomanip>
-
+#include <bitset>
 using namespace std;
 
 enum NUMBER_TYPE
@@ -50,12 +50,29 @@ public:
     {
         mStr = cStr;
     }
+
+
     String( long number, NUMBER_TYPE type )
     {
         stringstream stream;
-        stream << "0x"
-        << std::setfill( '0' ) << std::setw( sizeof( long ) * 2 )
-        << std::hex << number;
+        switch( type )
+        {
+            case NUMBER_TYPE::HEX:
+                stream << "0x"
+                << std::setfill( '0' ) << std::setw( sizeof( long ) * 2 )
+                << std::hex << number;
+                break;
+
+            case NUMBER_TYPE::BIN:
+                stream << "0b";
+                stream << std::bitset< 32 >( number );
+                break;
+
+            case NUMBER_TYPE::DEC:
+                stream << std::to_string( number );
+                break;
+
+        }
         mStr = stream.str();
     }
     String substring( int start, int to )

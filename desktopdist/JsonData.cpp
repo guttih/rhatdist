@@ -546,7 +546,7 @@ JsonData *JsonData::object( String *members, JsonData *parent )
             current = new JsonData( JSONTYPE_OBJECT, parent );
         else if( strArr.length() > 0 )
         {
-            JSONTYPE objType = getValueTypeFromChar( strArr.charAt( 0 ) );
+            // JSONTYPE objType = getValueTypeFromChar( strArr.charAt( 0 ) );
             if( parent->mType == JSONTYPE_KEY_VALUE )
                 current = new JsonData( JSONTYPE_OBJECT, parent );
         }

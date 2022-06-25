@@ -71,12 +71,17 @@ void test_JsonSave::test_readJsonExampleFile()
     // qDebug( "Reading file %s\n", path.toStdString().c_str() );
     Json json( fileToString( path.toStdString().c_str() ).c_str() );
     QVERIFY( json.isValid() );
-    // qDebug( "json=%s", json.toTree().c_str() );
 }
 
 void test_JsonSave::test_Person_SaveAndLoad()
 {
     Person person;
+    String str=String( ( long int ) -7, NUMBER_TYPE::HEX );
+
+    qDebug( "--------------------------------------" );
+    qDebug( "DEG: %s", String( ( long int ) 17, NUMBER_TYPE::DEC ).c_str() );
+    qDebug( "HEX: %s", String( ( long int ) 17, NUMBER_TYPE::HEX ).c_str() );
+    qDebug( "BIN: %s", String( ( long int ) 17, NUMBER_TYPE::BIN ).c_str() );
     person._name="Gudjon"; person._age=51;
     JsonFile jf( "person.json", ( AbstractJsonFileData* ) &person );
     QVERIFY( jf.save() );
@@ -179,7 +184,7 @@ void test_JsonSave::Persons_Itterate()
 
     QVERIFY( persons.getNextItem( &tmp ) );
     QCOMPARE( tmp._name.c_str(), "Two" );
-    ( tmp._age == 2 );
+    QVERIFY( tmp._age == 2 );
 
     QVERIFY( persons.getNextItem( &tmp ) );
     QCOMPARE( tmp._name.c_str(), "Three" );

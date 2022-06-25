@@ -37,7 +37,7 @@ bool JsonFile::save()
 std::string JsonFile::fileToString( const char *fileName )
 {
     ifstream inFile;
-    inFile.open( getFilename().c_str() ); //open the input file
+    inFile.open( fileName ); //open the input file
 
     stringstream strStream;
     strStream << inFile.rdbuf(); //read the file

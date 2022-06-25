@@ -36,6 +36,15 @@
         "iomanip": "cpp",
         "optional": "cpp",
         "sstream": "cpp",
-        "*.moc": "cpp"
+        "*.moc": "cpp",
+        "atomic": "cpp",
+        "cstddef": "cpp",
+        "cstring": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "functional": "cpp",
+        "numeric": "cpp",
+        "variant": "cpp",
+        "bitset": "cpp"
     }
 }
