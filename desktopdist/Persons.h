@@ -3,19 +3,20 @@
 
 
 #include "Person.h"
+#include "AbstractJsonFileDataCollection.h"
 
-class Persons : AbstractJsonFileData
+class Persons : AbstractJsonFileDataCollection
 {
 public:
     Persons();
     virtual bool setFromJson( const char *jsonString );
-    String toJsonString();
+    virtual String toJsonString();
     virtual ~Persons();
 
     unsigned int count();
     void clearData();
     bool addItem( Person const person );
-    bool RemoveItem( Person person );
+    bool RemoveItem( Person const person );
     bool getFirstItem( Person *person );
     bool getNextItem( Person *person );
 

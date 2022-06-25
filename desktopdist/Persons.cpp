@@ -30,24 +30,7 @@ bool Persons::setFromJson( const char *jsonString )
     {
         if( !Person::getValues( child, tmp ) )
             return false;
-        // if( child->getType() != JSONTYPE::JSONTYPE_OBJECT )
-        // {
-        //     return false;
-        // }
-        // prop=child->getChild( "name" );
-        // if( !prop || prop->getType() != JSONTYPE::JSONTYPE_KEY_VALUE || prop->getValueType() != JSONTYPE_STRING )
-        // {
-        //     return false;
-        // }
-        // tmp._name= prop->getValueAsString().c_str();
 
-        // prop=child->getChild( "age" );
-        // if( !prop || prop->getType() != JSONTYPE::JSONTYPE_KEY_VALUE || prop->getValueType() != JSONTYPE_ULONG )
-        // {
-        //     return false;
-        // }
-
-        // tmp._age= prop->getValueAsInt();
         _list.push_back( tmp );
 
         child=child->getNext();
@@ -89,12 +72,13 @@ bool Persons::addItem( Person const person )
     _list.push_back( person );
 }
 
-bool Persons::RemoveItem( Person person )
+bool Persons::RemoveItem( Person const person )
 {
+    String jsonStringToMatch=Person( person._name, person._age ).toJsonString();
     for( vector< Person >::iterator it=_list.begin(); it != _list.end(); it++ )
     {
 
-        if( ( *it ).toJsonString() == person.toJsonString() )
+        if( ( *it ).toJsonString() == jsonStringToMatch )
         {
             _list.erase( it );
             return true;
