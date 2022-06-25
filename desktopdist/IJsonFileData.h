@@ -6,7 +6,7 @@
 #include "String.h"
 #include "Json.h"
 
-class IJData
+class IJsonFileData
 {
 public:
     virtual bool setFromJson( const char *jsonString ) = 0;

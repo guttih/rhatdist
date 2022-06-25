@@ -78,7 +78,7 @@ void test_JsonSave::test_Person_SaveAndLoad()
 {
     Person person;
     person._name="Gudjon"; person._age=51;
-    JsonFile jf( "person.json", ( AbstractJData* ) &person );
+    JsonFile jf( "person.json", ( AbstractJsonFileData* ) &person );
     QVERIFY( jf.save() );
     person._name=""; person._age=0;
     QVERIFY( jf.load() );
@@ -108,11 +108,11 @@ void test_JsonSave::Persons_SaveAndLoad()
     std::string orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
     persons.setFromJson( orgJsonStr.c_str() );
 
-    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJData* ) &persons );
+    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &persons );
     jFile.save();
 
     Persons perTest;
-    JsonFile jFile2( filename.toStdString().c_str(), ( AbstractJData* ) &perTest );
+    JsonFile jFile2( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &perTest );
     jFile2.load();
     QVERIFY( persons.count() == 2 );
 }
@@ -130,11 +130,11 @@ void test_JsonSave::Persons_AddAndSave()
     QVERIFY( persons.count() == 0 );
     persons.addItem( p );
     QVERIFY( persons.count() == 1 );
-    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJData* ) &persons );
+    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &persons );
     jFile.save();
 
     Persons perTest;
-    JsonFile jFile2( filename.toStdString().c_str(), ( AbstractJData* ) &perTest );
+    JsonFile jFile2( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &perTest );
     jFile2.load();
     QVERIFY( persons.count() == 1 );
 }
@@ -145,7 +145,7 @@ void test_JsonSave::Persons_RemoveAndSave()
     Persons persons;
     QVERIFY( persons.count() == 0 );
     QString filename="persons.json";
-    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJData* ) &persons );
+    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &persons );
     jFile.load();
     QVERIFY( persons.count() == 1 );
     Person removeMe( "Sigurborg", 45 );

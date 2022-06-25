@@ -3,14 +3,14 @@
 
 // #pragma once
 
-#include "IJData.h"
+#include "IJsonFileData.h"
 #include "NotImplementedException.h"
 #include <iostream>
-class AbstractJData : public IJData
+class AbstractJsonFileData : public IJsonFileData
 {
 public:
-    AbstractJData();
-    virtual ~AbstractJData();
+    AbstractJsonFileData();
+    virtual ~AbstractJsonFileData();
 
 protected:
     String toJsonValuePair( String name, String value );

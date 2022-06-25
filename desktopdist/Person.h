@@ -3,9 +3,9 @@
 
 #pragma once
 
-#include "AbstractJData.h"
+#include "AbstractJsonFileData.h"
 
-class Person : AbstractJData
+class Person : AbstractJsonFileData
 {
 public:
     Person();

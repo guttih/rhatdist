@@ -17,7 +17,6 @@ Person::~Person()
 
 }
 
-
 bool Person::getValues( JsonData *child, Person &storeValuesHere )
 {
 
@@ -54,32 +53,11 @@ bool Person::setFromJson( const char *jsonString )
     if( !root )
         return false;
 
-    try
-    {
-        return this->getValues( root, *this );
-        // JsonData *child;
-
-        // child=root->getChild( "name" );
-        // if( !child || child->getType() != JSONTYPE::JSONTYPE_KEY_VALUE )
-        //     return false;
-        // _name= child->getValueAsString().c_str();
-        // child=root->getChild( "age" );
-        // if( !child || child->getType() != JSONTYPE::JSONTYPE_KEY_VALUE )
-        //     return false;
-        // _age= child->getValueAsInt();
-    }
-    catch ( ... )
-    {
-        return false;
-    }
-
-    return true;
-
+    return this->getValues( root, *this );
 }
 
 String Person::toJsonString()
 {
-    // throw NotImplementedException( __FUNCTION__ );
     String str="{";
     str+=toJsonValuePair( "name", _name ) + ",";
     str+=toJsonValuePair( "age", _age );

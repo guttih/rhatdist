@@ -3,12 +3,12 @@
 
 #pragma once
 
-#include "AbstractJData.h"
+#include "AbstractJsonFileData.h"
 
 class JsonFile
 {
 public:
-    JsonFile( const char *fileName, AbstractJData *data );
+    JsonFile( const char *fileName, AbstractJsonFileData *data );
     ~JsonFile();
     std::string getFilename();
     std::string toJsonString();
@@ -18,7 +18,7 @@ public:
 
 private:
     std::string _filename;
-    AbstractJData *_pData = NULL;
+    AbstractJsonFileData *_pData = NULL;
 };
 
 #endif

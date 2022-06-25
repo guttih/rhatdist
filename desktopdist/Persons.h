@@ -2,13 +2,9 @@
 #define PERSONS_H
 
 
-// #include "AbstractJData.h"
 #include "Person.h"
 
-// #include <iostream>
-// #include <vector>
-
-class Persons : AbstractJData
+class Persons : AbstractJsonFileData
 {
 public:
     Persons();

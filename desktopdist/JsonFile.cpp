@@ -1,7 +1,7 @@
 #include "JsonFile.h"
  #include <fstream>
 
-JsonFile::JsonFile( const char *fileName, AbstractJData *data )
+JsonFile::JsonFile( const char *fileName, AbstractJsonFileData *data )
 {
     _filename=fileName;
     _pData=data;
