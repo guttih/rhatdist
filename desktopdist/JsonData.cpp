@@ -213,7 +213,7 @@ char JsonData::getClosingToken( const char openingToken )
         case '7':
         case '8':
         case '9':
-        //todo hva� me�
+        //todo hvað með
         case '0': /*Fyrir floating point*/
         case 'f': /*Fyrir bool*/
         case 't':
@@ -484,7 +484,7 @@ JsonData *JsonData::members( String * pairs, JsonData * parent )
     JsonData* pLast;
 
 
-    //h�r �arf a� finna �t hvort object fari � child e�a next
+    //hér þarf að finna út hvort object fari í child eða next
 
     int keyIndexOfFirstChar, keyLength, valueIndexOfFirstChar,
         valueLength, pairLength;
@@ -598,7 +598,7 @@ bool JsonData::getPairIndexes( String* pairs, bool& thereIsAnotherPair,
         if( iComma > -1 )
             endOfValue = iComma - 1;
         else
-            endOfValue = strValue.length() - 1; //-1 h�r er munur � parse
+            endOfValue = strValue.length() - 1; //-1 hér er munur á parse
         JSONTYPE type = getType( strValue.substring( 0, endOfValue + 1 ) );
         if( type == JSONTYPE_INVALID )
         {
@@ -695,7 +695,7 @@ bool JsonData::validateValue( const JSONTYPE jsonValueType, String stringValue )
         case JSONTYPE_KEY_VALUE:
             return true;
         case JSONTYPE_STRING:
-            return true;
+            return true;//all strings are valid
         case JSONTYPE_INVALID:
             return false;
     }
@@ -1341,7 +1341,7 @@ String JsonData::getValueAsString()
 /// Converts the value of an object from string to a float.
 /// If the object is a JSONTYPE_KEY_VALUE then the child object value is returned as a number
 /// </summary>
-/// <returns>Success: If no valid conversion could be performed because the String doesn�t start with a digit,
+/// <returns>Success: If no valid conversion could be performed because the String doesn't start with a digit,
 /// a zero is returned. Data type: float.  Fail: the number 999999999</returns>
 float JsonData::getValueAsFloat()
 {
