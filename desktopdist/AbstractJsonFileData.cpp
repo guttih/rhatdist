@@ -10,7 +10,7 @@ AbstractJsonFileData::~AbstractJsonFileData()
 
 }
 
-String AbstractJsonFileData::toJsonValuePair( String name, String value )
+String AbstractJsonFileData::toJsonValuePair( String name, String value ) const
 {
     String str="\"";
     str+=name + "\":\"";
@@ -18,7 +18,7 @@ String AbstractJsonFileData::toJsonValuePair( String name, String value )
     return str;
 }
 
-String AbstractJsonFileData::toJsonValuePair( String name, long value )
+String AbstractJsonFileData::toJsonValuePair( String name, long value ) const
 {
     String str="\"";
     str+=name + "\":";

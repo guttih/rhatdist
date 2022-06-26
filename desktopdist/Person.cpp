@@ -56,7 +56,7 @@ bool Person::setFromJson( const char *jsonString )
     return this->getValues( root, *this );
 }
 
-String Person::toJsonString()
+String Person::toJsonString() const
 {
     String str="{";
     str+=toJsonValuePair( "name", _name ) + ",";

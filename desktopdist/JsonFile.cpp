@@ -17,7 +17,7 @@ std::string JsonFile::getFilename()
     return _filename;
 }
 
-std::string JsonFile::toJsonString()
+std::string JsonFile::toJsonString() const
 {
     std::string ret = _pData->toJsonString().c_str();
     return ret;

@@ -13,7 +13,7 @@ public:
     std::string _name;
     int _age;
     virtual bool setFromJson( const char *jsonString );
-    virtual String toJsonString();
+    virtual String toJsonString() const;
     virtual ~Person();
     static bool getValues( JsonData *child, Person &storeValuesHere );
 

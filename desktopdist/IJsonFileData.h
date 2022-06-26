@@ -10,7 +10,7 @@ class IJsonFileData
 {
 public:
     virtual bool setFromJson( const char *jsonString ) = 0;
-    virtual String toJsonString() = 0;
+    virtual String toJsonString() const = 0;
 
 private:
 

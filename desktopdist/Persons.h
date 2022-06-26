@@ -10,7 +10,7 @@ class Persons : AbstractJsonFileDataCollection
 public:
     Persons();
     virtual bool setFromJson( const char *jsonString );
-    virtual String toJsonString();
+    virtual String toJsonString() const;
     virtual ~Persons();
 
     unsigned int count();

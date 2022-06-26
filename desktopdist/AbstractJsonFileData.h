@@ -13,8 +13,8 @@ public:
     virtual ~AbstractJsonFileData();
 
 protected:
-    String toJsonValuePair( String name, String value );
-    String toJsonValuePair( String name, long value );
+    String toJsonValuePair( String name, String value ) const;
+    String toJsonValuePair( String name, long value ) const;
 
 };
 

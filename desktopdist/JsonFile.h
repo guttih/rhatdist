@@ -11,7 +11,7 @@ public:
     JsonFile( const char *fileName, AbstractJsonFileData *data );
     ~JsonFile();
     std::string getFilename();
-    std::string toJsonString();
+    std::string toJsonString() const;
     std::string fileToString( const char *fileName );
     bool save();
     bool load();

@@ -39,12 +39,12 @@ bool Persons::setFromJson( const char *jsonString )
 
     return true;
 }
-String Persons::toJsonString()
+String Persons::toJsonString() const
 {
 
     Person person;
     string ss="[";
-    for( vector< Person >::iterator it=_list.begin(); it != _list.end(); it++ )
+    for( auto it=_list.begin(); it != _list.end(); it++ )
     {
         const string assa =  ( *it ).toJsonString().c_str();
         ss.append( assa );
