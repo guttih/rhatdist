@@ -5,7 +5,7 @@
 
 #include "AbstractJsonFileData.h"
 
-class Person : AbstractJsonFileData
+class Person : public AbstractJsonFileData
 {
 public:
     Person();

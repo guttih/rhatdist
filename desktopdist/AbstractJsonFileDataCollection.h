@@ -2,7 +2,7 @@
 #define ABSTRACTJSONFILEDATACOLLECTION_H
 
 #include "AbstractJsonFileData.h"
-class AbstractJsonFileDataCollection : AbstractJsonFileData
+class AbstractJsonFileDataCollection : public AbstractJsonFileData
 {
 public:
     AbstractJsonFileDataCollection();
