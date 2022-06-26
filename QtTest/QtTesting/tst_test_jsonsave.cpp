@@ -92,7 +92,10 @@ void test_JsonSave::Persons_SetAndGet()
     String orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
     QVERIFY( persons.setFromJson( orgJsonStr.c_str() ) == true );
     QVERIFY( persons.count() == 2 );
-    QCOMPARE( persons.toJsonString().c_str(), orgJsonStr.c_str() );
+    qDebug( "orgJsonStr:%s", orgJsonStr.c_str() );
+    String actualStr=persons.toJsonString();
+    qDebug( "actualStr :%s", actualStr.c_str() );
+    QCOMPARE( actualStr.c_str(), orgJsonStr.c_str() );
 
 }
 void test_JsonSave::Persons_SaveAndLoad()
@@ -119,10 +122,6 @@ void test_JsonSave::Persons_SaveAndLoad()
 void test_JsonSave::Persons_AddAndSave()
 {
     QString filename="persons.json";
-    /*  QFile file( filename  );
-     if( QFileInfo::exists( filename ) )
-         file.remove();
- */
     Persons persons;
     Person p;
     p._name="Sigurborg"; p._age=45;

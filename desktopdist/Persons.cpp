@@ -28,7 +28,7 @@ bool Persons::setFromJson( const char *jsonString )
     _list.clear();
     do
     {
-        if( !Person::getValues( child, tmp ) )
+        if( !Person::getValues( child, &tmp ) )
             return false;
 
         _list.push_back( tmp );

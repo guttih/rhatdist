@@ -6,10 +6,20 @@ Person::Person()
 
 }
 
-Person::Person( std::string name, int age )
+void Person::set( std::string name, int age )
 {
     _name = name;
     _age = age;
+}
+Person::Person( std::string name, int age )
+{
+    set( name, age  );
+}
+
+Person::Person( const Person &rhs )
+{
+    set( rhs._name, rhs._age ); //todo: Next line should be activated instead of this one
+    //setFromJson( rhs.toJsonString().c_str() ); //Error: Why does this fail?  Is it because AbstractJsonFileData::toJsonString() is called instead of Person::toJsonString()
 }
 
 Person::~Person()
@@ -17,7 +27,7 @@ Person::~Person()
 
 }
 
-bool Person::getValues( JsonData *child, Person &storeValuesHere )
+bool Person::getValues( JsonData *child, Person *storeValuesHere )
 {
 
     if( !child || child->getType() != JSONTYPE::JSONTYPE_OBJECT )
@@ -30,16 +40,16 @@ bool Person::getValues( JsonData *child, Person &storeValuesHere )
         return false;
     }
 
-    storeValuesHere._name= prop->getValueAsString().c_str();
+    storeValuesHere->_name= prop->getValueAsString().c_str();
 
     prop=child->getChild( "age" );
     if( !prop || prop->getType() != JSONTYPE::JSONTYPE_KEY_VALUE || prop->getValueType() != JSONTYPE_ULONG )
     {
         return false;
     }
-    storeValuesHere._age= prop->getValueAsInt();
+    storeValuesHere->_age= prop->getValueAsInt();
 
-    return storeValuesHere._age != JSONDATA_ERRORNUMBER;
+    return storeValuesHere->_age != JSONDATA_ERRORNUMBER;
 }
 
 bool Person::setFromJson( const char *jsonString )
@@ -53,7 +63,7 @@ bool Person::setFromJson( const char *jsonString )
     if( !root )
         return false;
 
-    return this->getValues( root, *this );
+    return this->getValues( root, this );
 }
 
 String Person::toJsonString() const
