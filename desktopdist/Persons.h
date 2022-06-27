@@ -1,7 +1,6 @@
 #ifndef PERSONS_H
 #define PERSONS_H
 
-
 #include "Person.h"
 #include "AbstractJsonFileDataCollection.h"
 

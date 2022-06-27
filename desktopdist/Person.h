@@ -1,8 +1,6 @@
 #ifndef PERSON_H
 #define PERSON_H
 
-#pragma once
-
 #include "AbstractJsonFileData.h"
 
 class Person : public AbstractJsonFileData
