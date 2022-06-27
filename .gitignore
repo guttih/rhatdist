@@ -57,3 +57,4 @@ desktopdist/desktopdist
 *.log
 QtTest/*.json
 .vscode/settings.json
+QtTest/**/.vscode/*
