@@ -14,7 +14,6 @@ class test_JsonSave : public QObject
 Q_OBJECT
 
 private:
-    String fileToString( String fullFilePath );
 
 public:
     test_JsonSave();
@@ -23,10 +22,10 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void test_readJsonExampleFile();
-    void test_Person_CopyConstructor();
-    void test_Person_SaveAndLoad();
+
     void Persons_SetAndGet();
+    void Person_CopyConstructor();
+    void Person_SaveAndLoad();
     void Persons_SaveAndLoad();
     void Persons_AddAndSave();
     void Persons_RemoveAndSave();
@@ -54,27 +53,43 @@ void test_JsonSave::cleanupTestCase()
 
 }
 
-String test_JsonSave::fileToString( String fullFilePath )
+// String test_JsonSave::fileToString( String fullFilePath )
+// {
+//     ifstream inFile;
+//     inFile.open( fullFilePath.c_str() );  //open the input file
+
+//     stringstream strStream;
+//     strStream << inFile.rdbuf();  //read the file
+
+//     return strStream.str().c_str();
+
+// }
+
+// void test_JsonSave::test_readJsonExampleFile()
+// {
+//     QString path=qApp->applicationDirPath() + "/../example7.json";
+//     qDebug( "Reading file %s\n", path.toStdString().c_str() );
+//     Json json( fileToString( path.toStdString().c_str() ).c_str() );
+//     QVERIFY( json.isValid() );
+// }
+
+
+
+
+void test_JsonSave::Persons_SetAndGet()
 {
-    ifstream inFile;
-    inFile.open( fullFilePath.c_str() ); //open the input file
-
-    stringstream strStream;
-    strStream << inFile.rdbuf(); //read the file
-
-    return strStream.str().c_str();
-
+    Persons persons;
+    QVERIFY( persons.count() == 0 );
+    String orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
+    bool success = persons.setFromJson( orgJsonStr.c_str() );
+    QVERIFY( persons.count() == 2 );
+    String actualStr=persons.toJsonString();
+    qDebug( "\norgJsonStr:%s\nactualStr :%s\n", orgJsonStr.c_str(), actualStr.c_str() );
+    QVERIFY( success );
+    QCOMPARE( actualStr.c_str(), orgJsonStr.c_str() );
 }
 
-void test_JsonSave::test_readJsonExampleFile()
-{
-    QString path=qApp->applicationDirPath() + "/../example7.json";
-    // qDebug( "Reading file %s\n", path.toStdString().c_str() );
-    Json json( fileToString( path.toStdString().c_str() ).c_str() );
-    QVERIFY( json.isValid() );
-}
-
-void test_JsonSave:: test_Person_CopyConstructor()
+void test_JsonSave:: Person_CopyConstructor()
 {
     Person gudjon( "Gudjon", 51 );
     Person orri( "Orri", 12 );
@@ -87,7 +102,7 @@ void test_JsonSave:: test_Person_CopyConstructor()
     QCOMPARE( gudjon.toJsonString().c_str(), orri.toJsonString().c_str() );
 }
 
-void test_JsonSave::test_Person_SaveAndLoad()
+void test_JsonSave::Person_SaveAndLoad()
 {
     Person person;
     person._name="Gudjon"; person._age=51;
@@ -99,19 +114,6 @@ void test_JsonSave::test_Person_SaveAndLoad()
     QVERIFY( person._age == 51 );
 }
 
-void test_JsonSave::Persons_SetAndGet()
-{
-    Persons persons;
-    QVERIFY( persons.count() == 0 );
-    String orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
-    QVERIFY( persons.setFromJson( orgJsonStr.c_str() ) == true );
-    QVERIFY( persons.count() == 2 );
-    qDebug( "orgJsonStr:%s", orgJsonStr.c_str() );
-    String actualStr=persons.toJsonString();
-    qDebug( "actualStr :%s", actualStr.c_str() );
-    QCOMPARE( actualStr.c_str(), orgJsonStr.c_str() );
-
-}
 void test_JsonSave::Persons_SaveAndLoad()
 {
     QString filename="persons.json";
