@@ -44,7 +44,7 @@ String Persons::toJsonString() const
 
     Person person;
     string ss="[";
-    for( auto it=_list.begin(); it != _list.end(); it++ )
+    for( vector< Person >::const_iterator it=_list.begin(); it != _list.end(); it++ )
     {
         const string assa =  ( *it ).toJsonString().c_str();
         ss.append( assa );

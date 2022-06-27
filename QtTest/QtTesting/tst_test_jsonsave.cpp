@@ -24,6 +24,7 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
     void test_readJsonExampleFile();
+    void test_Person_CopyConstructor();
     void test_Person_SaveAndLoad();
     void Persons_SetAndGet();
     void Persons_SaveAndLoad();
@@ -71,6 +72,19 @@ void test_JsonSave::test_readJsonExampleFile()
     // qDebug( "Reading file %s\n", path.toStdString().c_str() );
     Json json( fileToString( path.toStdString().c_str() ).c_str() );
     QVERIFY( json.isValid() );
+}
+
+void test_JsonSave:: test_Person_CopyConstructor()
+{
+    Person gudjon( "Gudjon", 51 );
+    Person orri( "Orri", 12 );
+    orri=gudjon;
+    QCOMPARE( gudjon.toJsonString().c_str(), orri.toJsonString().c_str() );
+    orri.set( "Orri", 11 );
+    QCOMPARE( orri._name.c_str(), "Orri" );
+    QVERIFY( orri._age == 11 );
+    gudjon.setFromJson( orri.toJsonString().c_str() );
+    QCOMPARE( gudjon.toJsonString().c_str(), orri.toJsonString().c_str() );
 }
 
 void test_JsonSave::test_Person_SaveAndLoad()

@@ -5,7 +5,7 @@
 #include "Person.h"
 #include "AbstractJsonFileDataCollection.h"
 
-class Persons : AbstractJsonFileDataCollection
+class Persons : public AbstractJsonFileDataCollection
 {
 public:
     Persons();
@@ -22,7 +22,7 @@ public:
 
 private:
     std::vector< Person > _list;
-    vector< Person >::iterator _itStepping;
+    vector< Person >::const_iterator _itStepping;
 };
 
 #endif
