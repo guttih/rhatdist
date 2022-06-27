@@ -150,10 +150,11 @@ public:
         return false;
     }
 
-    bool save()
+    bool save( const char *filename = NULL )
     {
+        std::string fName=filename ? filename : getFilename();
         FILE * fp;
-        fp = fopen(  getFilename().c_str(), "w" );
+        fp = fopen(  fName.c_str(), "w" );
         if( !fp )
             return false;
         int cnt = fprintf( fp, "%s ", toJsonString().c_str() );
@@ -173,9 +174,10 @@ public:
 
     }
 
-    bool load()
+    bool load( const char *filename = NULL )
     {
-        return setFromJson( fileToString( getFilename().c_str() ).c_str() );
+        std::string fName=filename ? filename : getFilename();
+        return setFromJson( fileToString( fName.c_str() ).c_str() );
     }
 
 private:

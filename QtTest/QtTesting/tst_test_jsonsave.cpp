@@ -2,8 +2,6 @@
 #include <QCoreApplication>
 #include <fstream>
 #include "Person.h"
-#include "Persons.h"
-#include "JsonFile.h"
 #include "String.h"
 #include "JsonFileDataCollection.h"
 
@@ -23,17 +21,15 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
 
-    void ReadJsonExampleFile();//todo:why does Persons_SetAndGet fail if it is run afther this function
-    void Person_SaveAndLoad();
-    void Persons_SetAndGet();
+    void ReadJsonExampleFile();
+    void Coll_SetAndGet();
+    void Coll_SaveAndLoad();
     void Person_CopyConstructor();
-    void Persons_ComparisonOperators();
+    void Person_ComparisonOperators();
     void Persons_SaveAndLoad();
-    void Persons_AddAndSave();
     void Coll_AddAndSave();
-    void Persons_RemoveAndSave();
+    void Coll_RemoveAndSave();
     void Coll_AddAndRemove();
-    void Persons_Iterate();
     void Coll_Iterate();
 
 };
@@ -62,13 +58,12 @@ void test_JsonSave::cleanupTestCase()
 
 void test_JsonSave::ReadJsonExampleFile()
 {
-    //todo: find out why Persons_SetAndGet fails if it is called after this function
-
-    QString path=qApp->applicationDirPath() + "/../example7.json";
-    qDebug( "Reading file %s\n", path.toStdString().c_str() );
+    QString pathQ=qApp->applicationDirPath() + "/../example7.json";
+    String path=pathQ.toStdString().c_str();
+    qDebug( "Reading file %s\n", path.c_str() );
 
     ifstream inFile;
-    inFile.open( path.toStdString().c_str() );  //open the input file
+    inFile.open( path.c_str() );  //open the input file
 
     stringstream strStream;
     strStream << inFile.rdbuf();  //read the file
@@ -82,17 +77,18 @@ void test_JsonSave::ReadJsonExampleFile()
 
 
 
-void test_JsonSave::Persons_SetAndGet()
+void test_JsonSave::Coll_SetAndGet()
 {
-    Persons persons;
-    QVERIFY( persons.count() == 0 );
+    JsonFileDataCollection< Person > coll;
+    QVERIFY( coll.count() == 0 );
+    //todo: make this test for JsonFileDataCollection
     String orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
-    bool success = persons.setFromJson( orgJsonStr.c_str() );
-    QVERIFY( persons.count() == 2 );
-    String actualStr=persons.toJsonString();
-    // qDebug( "\norgJsonStr:%s\nactualStr :%s\n", orgJsonStr.c_str(), actualStr.c_str() );
+    bool success = coll.setFromJson( orgJsonStr.c_str() );
+    QVERIFY( coll.count() == 2 );
+    String actualStr=coll.toJsonString();
+    qDebug( "\norgJsonStr:%s\nactualStr :%s\n", orgJsonStr.c_str(), actualStr.c_str() );
     QVERIFY( success );
-    QCOMPARE( actualStr.c_str(), orgJsonStr.c_str() );
+    QVERIFY( actualStr == orgJsonStr );
 }
 
 void test_JsonSave:: Person_CopyConstructor()
@@ -101,89 +97,51 @@ void test_JsonSave:: Person_CopyConstructor()
     Person orri( "Orri", 12 );
     orri=gudjon;
     QCOMPARE( gudjon.toJsonString().c_str(), orri.toJsonString().c_str() );
+    QVERIFY( gudjon == orri );
     orri.set( "Orri", 11 );
     QCOMPARE( orri._name.c_str(), "Orri" );
     QVERIFY( orri._age == 11 );
     gudjon.setFromJson( orri.toJsonString().c_str() );
     QCOMPARE( gudjon.toJsonString().c_str(), orri.toJsonString().c_str() );
+    QVERIFY( gudjon == orri );
 }
 
-void test_JsonSave::Person_SaveAndLoad()
+void test_JsonSave::Coll_SaveAndLoad()
 {
+    Person_CopyConstructor();
     Person person;
     person._name="Gudjon"; person._age=51;
-    JsonFile jf( "person.json", ( AbstractJsonFileData* ) &person );
-    QVERIFY( jf.save() );
-    person._name=""; person._age=0;
-    QVERIFY( jf.load() );
-    QCOMPARE( person._name, "Gudjon" );
-    QVERIFY( person._age == 51 );
+    JsonFileDataCollection< Person > coll( "coll-person.json" );
+    coll.addItem( person );
+
+    QVERIFY( coll.save() );
+    coll.clear();
+    QVERIFY( coll.count() == 0 );
+    Person second;
+    QVERIFY( coll.load() );
+    QVERIFY( coll.getFirstItem( &second ) );
+    QVERIFY( person == second );
 }
 
 void test_JsonSave::Persons_SaveAndLoad()
 {
     QString filename="persons.json";
+
     QFile file( filename  );
     if( QFileInfo::exists( filename ) )
         file.remove();
 
-    Persons persons;
-    QVERIFY( persons.count() == 0 );
+    JsonFileDataCollection< Person > coll( filename.toStdString().c_str() );
+    // Persons persons;
+    QVERIFY( coll.count() == 0 );
     std::string orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
-    persons.setFromJson( orgJsonStr.c_str() );
+    coll.setFromJson( orgJsonStr.c_str() );
+    QVERIFY( coll.count() == 2 );
+    QVERIFY( coll.save() );
 
-    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &persons );
-    jFile.save();
-
-    Persons perTest;
-    JsonFile jFile2( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &perTest );
-    jFile2.load();
-    QVERIFY( persons.count() == 2 );
-}
-
-
-void test_JsonSave::Persons_Iterate()
-{
-    Persons_AddAndSave();
-    Persons persons;
-    persons.addItem( Person( "One", 1 ) );
-    persons.addItem( Person( "Two", 2 ) );
-    persons.addItem( Person( "Three", 3 ) );
-    QVERIFY( persons.count() == 3 );
-    Person tmp;
-    QVERIFY( persons.getFirstItem( &tmp ) );
-    QCOMPARE( tmp._name.c_str(), "One" );
-    QVERIFY( tmp._age == 1 );
-
-    QVERIFY( persons.getNextItem( &tmp ) );
-    QCOMPARE( tmp._name.c_str(), "Two" );
-    QVERIFY( tmp._age == 2 );
-
-    QVERIFY( persons.getNextItem( &tmp ) );
-    QCOMPARE( tmp._name.c_str(), "Three" );
-    QVERIFY( tmp._age == 3 );
-
-    QVERIFY( !persons.getNextItem( &tmp )  );
-    QCOMPARE( tmp._name.c_str(), "Three" );
-    QVERIFY( tmp._age == 3 );
-}
-
-void test_JsonSave::Persons_AddAndSave()
-{
-    QString filename="persons.json";
-    Persons persons;
-    Person p;
-    p._name="Sigurborg"; p._age=45;
-    QVERIFY( persons.count() == 0 );
-    persons.addItem( p );
-    QVERIFY( persons.count() == 1 );
-    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &persons );
-    jFile.save();
-
-    Persons perTest;
-    JsonFile jFile2( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &perTest );
-    jFile2.load();
-    QVERIFY( persons.count() == 1 );
+    JsonFileDataCollection< Person > coll2;
+    coll2.load( filename.toStdString().c_str() );
+    QVERIFY( coll.count() == 2 );
 }
 
 void test_JsonSave::Coll_AddAndSave()
@@ -220,7 +178,7 @@ void test_JsonSave::Coll_AddAndSave()
 }
 
 
-void test_JsonSave::Persons_ComparisonOperators()
+void test_JsonSave::Person_ComparisonOperators()
 {
     Person p1( "Sigurborg", 45 ), p2( "Sigurborg", 45 );
 
@@ -243,35 +201,46 @@ void test_JsonSave::Persons_ComparisonOperators()
 }
 
 
-void test_JsonSave::Persons_RemoveAndSave()
+void test_JsonSave::Coll_RemoveAndSave()
 {
-    Persons_AddAndSave();
-    Persons persons;
-    QVERIFY( persons.count() == 0 );
-    QString filename="persons.json";
-    JsonFile jFile( filename.toStdString().c_str(), ( AbstractJsonFileData* ) &persons );
-    jFile.load();
-    QVERIFY( persons.count() == 1 );
+    //todo: make this test for JsonFileDataCollection
+    JsonFileDataCollection< Person > coll( "coll-persons.json" );
+    QVERIFY( coll.count() == 0 );
+    coll.setFromJson( "[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Sigurborg\",\"age\":45},{\"name\":\"Orri\",\"age\":12}]" );
+    coll.save();
+
+    QVERIFY( coll.count() == 3 );
+
     Person removeMe( "Sigurborg", 45 );
-    persons.RemoveItem( removeMe );
-    QVERIFY( persons.count() == 0 );
-    jFile.load();
-    Person perTwo( "Gudjon", 51 );
-    persons.addItem( perTwo );
-    jFile.save();
-    jFile.load();
-    QVERIFY( persons.count() == 2 );
-    persons.RemoveItem( perTwo );
-    QVERIFY( persons.count() == 1 );
-    persons.RemoveItem( removeMe );
-    QVERIFY( persons.count() == 0 );
+    coll.RemoveItem( removeMe );
+    QVERIFY( coll.count() == 2 );
+
+    JsonFileDataCollection< Person > coll2( "coll-persons.json" );
+    coll2.load();
+    QVERIFY( coll2.count() == 3 );
+
+    while( coll2.getFirstItem( &removeMe ) )
+    {
+        coll2.RemoveItem( removeMe );
+    }
+    QVERIFY( coll2.count() == 0 );
+    // QVERIFY( persons.count() == 0 );
+    // jFile.load();
+    // Person perTwo( "Gudjon", 51 );
+    // persons.addItem( perTwo );
+    // jFile.save();
+    // jFile.load();
+    // QVERIFY( persons.count() == 2 );
+    // persons.RemoveItem( perTwo );
+    // QVERIFY( persons.count() == 1 );
+    // persons.RemoveItem( removeMe );
+    // QVERIFY( persons.count() == 0 );
 }
 
 
 void test_JsonSave::Coll_Iterate()
 {
     JsonFileDataCollection< Person > coll;
-    Persons_AddAndSave();
     coll.addItem( Person( "One", 1 ) );
     coll.addItem( Person( "Two", 2 ) );
     coll.addItem( Person( "Three", 3 ) );
