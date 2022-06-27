@@ -60,7 +60,7 @@ void test_JsonSave::ReadJsonExampleFile()
 {
     QString pathQ=qApp->applicationDirPath() + "/../example7.json";
     String path=pathQ.toStdString().c_str();
-    qDebug( "Reading file %s\n", path.c_str() );
+    // qDebug( "Reading file %s\n", path.c_str() );
 
     ifstream inFile;
     inFile.open( path.c_str() );  //open the input file
@@ -81,12 +81,11 @@ void test_JsonSave::Coll_SetAndGet()
 {
     JsonFileDataCollection< Person > coll;
     QVERIFY( coll.count() == 0 );
-    //todo: make this test for JsonFileDataCollection
     String orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
     bool success = coll.setFromJson( orgJsonStr.c_str() );
     QVERIFY( coll.count() == 2 );
     String actualStr=coll.toJsonString();
-    qDebug( "\norgJsonStr:%s\nactualStr :%s\n", orgJsonStr.c_str(), actualStr.c_str() );
+    // qDebug( "\norgJsonStr:%s\nactualStr :%s\n", orgJsonStr.c_str(), actualStr.c_str() );
     QVERIFY( success );
     QVERIFY( actualStr == orgJsonStr );
 }
