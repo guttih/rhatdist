@@ -58,3 +58,4 @@ desktopdist/desktopdist
 QtTest/*.json
 .vscode/settings.json
 QtTest/**/.vscode/*
+coll-persons.json

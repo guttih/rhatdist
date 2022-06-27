@@ -23,18 +23,18 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
 
+    void ReadJsonExampleFile();//todo:why does Persons_SetAndGet fail if it is run afther this function
+    void Person_SaveAndLoad();
     void Persons_SetAndGet();
     void Person_CopyConstructor();
-    void Person_SaveAndLoad();
+    void Persons_ComparisonOperators();
     void Persons_SaveAndLoad();
     void Persons_AddAndSave();
-    void Persons_ComparisonOperators();
     void Coll_AddAndSave();
     void Persons_RemoveAndSave();
     void Coll_AddAndRemove();
     void Persons_Iterate();
-    void Persons_Iterate2();
-    void sandbox();
+    void Coll_Iterate();
 
 };
 
@@ -59,25 +59,25 @@ void test_JsonSave::cleanupTestCase()
 
 }
 
-// String test_JsonSave::fileToString( String fullFilePath )
-// {
-//     ifstream inFile;
-//     inFile.open( fullFilePath.c_str() );  //open the input file
 
-//     stringstream strStream;
-//     strStream << inFile.rdbuf();  //read the file
+void test_JsonSave::ReadJsonExampleFile()
+{
+    //todo: find out why Persons_SetAndGet fails if it is called after this function
 
-//     return strStream.str().c_str();
+    QString path=qApp->applicationDirPath() + "/../example7.json";
+    qDebug( "Reading file %s\n", path.toStdString().c_str() );
 
-// }
+    ifstream inFile;
+    inFile.open( path.toStdString().c_str() );  //open the input file
 
-// void test_JsonSave::test_readJsonExampleFile()
-// {
-//     QString path=qApp->applicationDirPath() + "/../example7.json";
-//     qDebug( "Reading file %s\n", path.toStdString().c_str() );
-//     Json json( fileToString( path.toStdString().c_str() ).c_str() );
-//     QVERIFY( json.isValid() );
-// }
+    stringstream strStream;
+    strStream << inFile.rdbuf();  //read the file
+
+    std::string content = strStream.str().c_str();
+
+    Json json( content.c_str() );
+    QVERIFY( json.isValid() );
+}
 
 
 
@@ -90,7 +90,7 @@ void test_JsonSave::Persons_SetAndGet()
     bool success = persons.setFromJson( orgJsonStr.c_str() );
     QVERIFY( persons.count() == 2 );
     String actualStr=persons.toJsonString();
-    qDebug( "\norgJsonStr:%s\nactualStr :%s\n", orgJsonStr.c_str(), actualStr.c_str() );
+    // qDebug( "\norgJsonStr:%s\nactualStr :%s\n", orgJsonStr.c_str(), actualStr.c_str() );
     QVERIFY( success );
     QCOMPARE( actualStr.c_str(), orgJsonStr.c_str() );
 }
@@ -268,19 +268,7 @@ void test_JsonSave::Persons_RemoveAndSave()
 }
 
 
-
-void test_JsonSave::sandbox()
-{
-    JsonFileDataCollection< Person > coll;
-    coll.addItem( Person( "Gudjon", 51 ) );
-    coll.addItem( Person( "Sigurborg", 51 - 6 ) );
-    coll.addItem( Person( "Orri", 12 ) );
-    coll.print();
-    qDebug( coll.toJsonString().c_str() );
-
-}
-
-void test_JsonSave::Persons_Iterate2()
+void test_JsonSave::Coll_Iterate()
 {
     JsonFileDataCollection< Person > coll;
     Persons_AddAndSave();
