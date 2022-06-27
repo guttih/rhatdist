@@ -1255,6 +1255,7 @@ String JsonData::trim( String jsonStringToTrim )
         if( inString || !isWhitespace( c ) )
         {
             buffer[ bufPos++ ] = c;
+            buffer[ bufPos ] = '\0';
         }
     }
     String strRet( buffer );
