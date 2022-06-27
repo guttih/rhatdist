@@ -30,6 +30,8 @@ Person::~Person()
 bool Person::getValues( JsonData *child, Person *storeValuesHere )
 {
 
+    string newName;
+    int newAge;
     if( !child || child->getType() != JSONTYPE::JSONTYPE_OBJECT )
     {
         return false;
@@ -40,16 +42,19 @@ bool Person::getValues( JsonData *child, Person *storeValuesHere )
         return false;
     }
 
-    storeValuesHere->_name= prop->getValueAsString().c_str();
+    newName= prop->getValueAsString().c_str();
 
     prop=child->getChild( "age" );
     if( !prop || prop->getType() != JSONTYPE::JSONTYPE_KEY_VALUE || prop->getValueType() != JSONTYPE_ULONG )
     {
         return false;
     }
-    storeValuesHere->_age= prop->getValueAsInt();
+    newAge= prop->getValueAsInt();
+    bool success = storeValuesHere->_age != JSONDATA_ERRORNUMBER;
+    if( success )
+        storeValuesHere->set( newName, newAge );
 
-    return storeValuesHere->_age != JSONDATA_ERRORNUMBER;
+    return success;
 }
 
 bool Person::setFromJson( const char *jsonString )
