@@ -43,16 +43,16 @@ String Persons::toJsonString() const
 {
 
     Person person;
-    String ss="[";
+    string ss="[";
     for( vector< Person >::const_iterator it=_list.begin(); it != _list.end(); it++ )
     {
-        ss+= ( *it ).toJsonString();
+        ss.append( ( *it ).toJsonString().c_str() );
         if( next( it ) != _list.end() )
         {
-            ss+= ",";
+            ss.append( "," );
         }
     }
-    ss+= "]";
+    ss.append( "]" );
     return ss;
 }
 

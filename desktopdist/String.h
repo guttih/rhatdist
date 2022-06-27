@@ -143,6 +143,10 @@ public:
     {
         return this->mStr == rhs.mStr;
     }
+    bool operator!=( String rhs ) const
+    {
+        return !( *this == rhs );
+    }
     float toFloat()
     {
         return ( float ) std::stod( mStr );

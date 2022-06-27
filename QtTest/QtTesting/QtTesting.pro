@@ -23,6 +23,7 @@ SOURCES += \
         tst_test_jsonsave.cpp
 
 HEADERS += \
+        $$SRC_RELATIVE/JsonFileDataCollection.h \
         $$SRC_RELATIVE/JsonFile.h \
         $$SRC_RELATIVE/Persons.h \
         $$SRC_RELATIVE/Person.h \
