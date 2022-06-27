@@ -24,9 +24,9 @@ private slots:
     void ReadJsonExampleFile();
     void Coll_SetAndGet();
     void Coll_SaveAndLoad();
+    void Coll_SaveAndLoad2();
     void Person_CopyConstructor();
     void Person_ComparisonOperators();
-    void Persons_SaveAndLoad();
     void Coll_AddAndSave();
     void Coll_RemoveAndSave();
     void Coll_AddAndRemove();
@@ -108,7 +108,6 @@ void test_JsonSave:: Person_CopyConstructor()
 
 void test_JsonSave::Coll_SaveAndLoad()
 {
-    Person_CopyConstructor();
     Person person;
     person._name="Gudjon"; person._age=51;
     JsonFileDataCollection< Person > coll( "coll-person.json" );
@@ -123,9 +122,9 @@ void test_JsonSave::Coll_SaveAndLoad()
     QVERIFY( person == second );
 }
 
-void test_JsonSave::Persons_SaveAndLoad()
+void test_JsonSave::Coll_SaveAndLoad2()
 {
-    QString filename="persons.json";
+    QString filename="coll-person.json";
 
     QFile file( filename  );
     if( QFileInfo::exists( filename ) )
@@ -203,7 +202,6 @@ void test_JsonSave::Person_ComparisonOperators()
 
 void test_JsonSave::Coll_RemoveAndSave()
 {
-    //todo: make this test for JsonFileDataCollection
     JsonFileDataCollection< Person > coll( "coll-persons.json" );
     QVERIFY( coll.count() == 0 );
     coll.setFromJson( "[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Sigurborg\",\"age\":45},{\"name\":\"Orri\",\"age\":12}]" );
@@ -215,7 +213,7 @@ void test_JsonSave::Coll_RemoveAndSave()
     coll.RemoveItem( removeMe );
     QVERIFY( coll.count() == 2 );
 
-    JsonFileDataCollection< Person > coll2( "coll-persons.json" );
+    JsonFileDataCollection< Person > coll2( coll.getFilename() );
     coll2.load();
     QVERIFY( coll2.count() == 3 );
 
@@ -224,17 +222,13 @@ void test_JsonSave::Coll_RemoveAndSave()
         coll2.RemoveItem( removeMe );
     }
     QVERIFY( coll2.count() == 0 );
-    // QVERIFY( persons.count() == 0 );
-    // jFile.load();
-    // Person perTwo( "Gudjon", 51 );
-    // persons.addItem( perTwo );
-    // jFile.save();
-    // jFile.load();
-    // QVERIFY( persons.count() == 2 );
-    // persons.RemoveItem( perTwo );
-    // QVERIFY( persons.count() == 1 );
-    // persons.RemoveItem( removeMe );
-    // QVERIFY( persons.count() == 0 );
+    coll2.load();
+    QVERIFY( coll2.count() == 3 );
+    // ;
+    coll2.addItem( Person( "Sóley", 13 ) );
+    coll2.save();
+    coll.load();
+    QVERIFY( coll.count() == 4 );
 }
 
 
