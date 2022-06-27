@@ -197,9 +197,9 @@ void test_JsonSave::Persons_Iterate()
     QCOMPARE( tmp._name.c_str(), "Three" );
     QVERIFY( tmp._age == 3 );
 
-    // QVERIFY( persons.getNextItem( &tmp ) == false );
-    // QCOMPARE( tmp._name.c_str(), "Three" );
-    // QVERIFY( tmp._age == 3 );
+    QVERIFY( !persons.getNextItem( &tmp )  );
+    QCOMPARE( tmp._name.c_str(), "Three" );
+    QVERIFY( tmp._age == 3 );
 }
 
 QTEST_MAIN( test_JsonSave )
