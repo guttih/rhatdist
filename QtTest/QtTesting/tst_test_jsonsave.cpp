@@ -3,6 +3,7 @@
 #include <fstream>
 #include "Person.h"
 #include "String.h"
+#include "JsonFileData.h"
 #include "JsonFileDataCollection.h"
 
 // add necessary includes here
@@ -22,7 +23,9 @@ private slots:
     void cleanupTestCase();
 
     void ReadJsonExampleFile();
+    void GetAndGet();
     void Coll_SetAndGet();
+    void SaveAndLoad();
     void Coll_SaveAndLoad();
     void Coll_SaveAndLoad2();
     void Person_CopyConstructor();
@@ -76,7 +79,16 @@ void test_JsonSave::ReadJsonExampleFile()
 
 
 
+void test_JsonSave::GetAndGet()
+{
+    JsonFileData< Person > jf;
+    jf.setFilename( "person.json" );
+    String orgJsonStr="{\"name\":\"tveir\",\"age\":2}";
+    QCOMPARE( jf.getFilename().c_str(), "person.json" );
+    QVERIFY( jf.setFromJson( orgJsonStr.c_str() ) );
+    QCOMPARE( jf.toJsonString().c_str(), orgJsonStr.c_str() );
 
+}
 void test_JsonSave::Coll_SetAndGet()
 {
     JsonFileDataCollection< Person > coll;
@@ -105,6 +117,19 @@ void test_JsonSave:: Person_CopyConstructor()
     QVERIFY( gudjon == orri );
 }
 
+void test_JsonSave::SaveAndLoad()
+{
+    Person person;
+    person._name="Gudjon"; person._age=57;
+    JsonFileData< Person > obj;
+    obj._name="Gudjon"; obj._age=57;
+    obj.setFilename( "person.json" );
+    QVERIFY( obj.save() );
+    obj._name="";
+    obj._age=0;
+    QVERIFY( obj.load() );
+    QVERIFY( person.toJsonString() == obj.toJsonString() );
+}
 void test_JsonSave::Coll_SaveAndLoad()
 {
     Person person;
