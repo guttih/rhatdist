@@ -1,8 +1,6 @@
 #ifndef JsonFileDataCollection_H
 #define JsonFileDataCollection_H
-#include <iostream>
 #include <vector>
- #include "AbstractJsonFileDataCollection.h"
 template< typename T >
 class JsonFileDataCollection : public JsonFileData< T >
 {
