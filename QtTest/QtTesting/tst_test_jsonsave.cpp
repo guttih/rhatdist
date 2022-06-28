@@ -3,8 +3,8 @@
 #include <fstream>
 #include "Person.h"
 #include "String.h"
-#include "JsonFileData.h"
-#include "JsonFileDataCollection.h"
+#include "JsonFile.h"
+#include "JsonFileCollection.h"
 
 // add necessary includes here
 
@@ -24,16 +24,16 @@ private slots:
 
     void ReadJsonExampleFile();
     void GetAndGet();
-    void Coll_SetAndGet();
+    void SetAndGetColl();
     void SaveAndLoad();
-    void Coll_SaveAndLoad();
-    void Coll_SaveAndLoad2();
-    void Person_CopyConstructor();
-    void Person_ComparisonOperators();
-    void Coll_AddAndSave();
-    void Coll_RemoveAndSave();
-    void Coll_AddAndRemove();
-    void Coll_Iterate();
+    void SaveAndLoadColl();
+    void SaveAndLoadColl2();
+    void CopyConstructor();
+    void ComparisonOperators();
+    void AddAndSaveColl();
+    void RemoveAndSaveColl();
+    void AddAndRemoveColl();
+    void IterateColl();
 
 };
 
@@ -81,7 +81,7 @@ void test_JsonSave::ReadJsonExampleFile()
 
 void test_JsonSave::GetAndGet()
 {
-    JsonFileData< Person > jf;
+    JsonFile< Person > jf;
     jf.setFilename( "person.json" );
     String orgJsonStr="{\"name\":\"tveir\",\"age\":2}";
     QCOMPARE( jf.getFilename().c_str(), "person.json" );
@@ -89,9 +89,9 @@ void test_JsonSave::GetAndGet()
     QCOMPARE( jf.toJsonString().c_str(), orgJsonStr.c_str() );
 
 }
-void test_JsonSave::Coll_SetAndGet()
+void test_JsonSave::SetAndGetColl()
 {
-    JsonFileDataCollection< Person > coll;
+    JsonFileCollection< Person > coll;
     QVERIFY( coll.count() == 0 );
     String orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
     bool success = coll.setFromJson( orgJsonStr.c_str() );
@@ -102,7 +102,7 @@ void test_JsonSave::Coll_SetAndGet()
     QVERIFY( actualStr == orgJsonStr );
 }
 
-void test_JsonSave:: Person_CopyConstructor()
+void test_JsonSave:: CopyConstructor()
 {
     Person gudjon( "Gudjon", 51 );
     Person orri( "Orri", 12 );
@@ -121,7 +121,7 @@ void test_JsonSave::SaveAndLoad()
 {
     Person person;
     person._name="Gudjon"; person._age=57;
-    JsonFileData< Person > obj;
+    JsonFile< Person > obj;
     obj._name="Gudjon"; obj._age=57;
     obj.setFilename( "person.json" );
     QVERIFY( obj.save() );
@@ -130,11 +130,11 @@ void test_JsonSave::SaveAndLoad()
     QVERIFY( obj.load() );
     QVERIFY( person.toJsonString() == obj.toJsonString() );
 }
-void test_JsonSave::Coll_SaveAndLoad()
+void test_JsonSave::SaveAndLoadColl()
 {
     Person person;
     person._name="Gudjon"; person._age=51;
-    JsonFileDataCollection< Person > coll( "coll-person.json" );
+    JsonFileCollection< Person > coll( "coll-person.json" );
     coll.addItem( person );
 
     QVERIFY( coll.save() );
@@ -146,7 +146,7 @@ void test_JsonSave::Coll_SaveAndLoad()
     QVERIFY( person == second );
 }
 
-void test_JsonSave::Coll_SaveAndLoad2()
+void test_JsonSave::SaveAndLoadColl2()
 {
     QString filename="coll-person.json";
 
@@ -154,7 +154,7 @@ void test_JsonSave::Coll_SaveAndLoad2()
     if( QFileInfo::exists( filename ) )
         file.remove();
 
-    JsonFileDataCollection< Person > coll( filename.toStdString().c_str() );
+    JsonFileCollection< Person > coll( filename.toStdString().c_str() );
     // Persons persons;
     QVERIFY( coll.count() == 0 );
     std::string orgJsonStr="[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Orri\",\"age\":12}]";
@@ -162,17 +162,17 @@ void test_JsonSave::Coll_SaveAndLoad2()
     QVERIFY( coll.count() == 2 );
     QVERIFY( coll.save() );
 
-    JsonFileDataCollection< Person > coll2;
+    JsonFileCollection< Person > coll2;
     coll2.load( filename.toStdString().c_str() );
     QVERIFY( coll.count() == 2 );
 }
 
-void test_JsonSave::Coll_AddAndSave()
+void test_JsonSave::AddAndSaveColl()
 {
     QString filename="coll-persons.json";
     Person p( "Sigurborg", 45 );
 
-    JsonFileDataCollection< Person > coll( filename.toStdString().c_str() );
+    JsonFileCollection< Person > coll( filename.toStdString().c_str() );
 
     QVERIFY( coll.count() == 0 );
     coll.addItem( p );
@@ -201,7 +201,7 @@ void test_JsonSave::Coll_AddAndSave()
 }
 
 
-void test_JsonSave::Person_ComparisonOperators()
+void test_JsonSave::ComparisonOperators()
 {
     Person p1( "Sigurborg", 45 ), p2( "Sigurborg", 45 );
 
@@ -224,9 +224,9 @@ void test_JsonSave::Person_ComparisonOperators()
 }
 
 
-void test_JsonSave::Coll_RemoveAndSave()
+void test_JsonSave::RemoveAndSaveColl()
 {
-    JsonFileDataCollection< Person > coll( "coll-persons.json" );
+    JsonFileCollection< Person > coll( "coll-persons.json" );
     QVERIFY( coll.count() == 0 );
     coll.setFromJson( "[{\"name\":\"Gudjon\",\"age\":51},{\"name\":\"Sigurborg\",\"age\":45},{\"name\":\"Orri\",\"age\":12}]" );
     coll.save();
@@ -237,7 +237,7 @@ void test_JsonSave::Coll_RemoveAndSave()
     coll.RemoveItem( removeMe );
     QVERIFY( coll.count() == 2 );
 
-    JsonFileDataCollection< Person > coll2( coll.getFilename() );
+    JsonFileCollection< Person > coll2( coll.getFilename() );
     coll2.load();
     QVERIFY( coll2.count() == 3 );
 
@@ -256,9 +256,9 @@ void test_JsonSave::Coll_RemoveAndSave()
 }
 
 
-void test_JsonSave::Coll_Iterate()
+void test_JsonSave::IterateColl()
 {
-    JsonFileDataCollection< Person > coll;
+    JsonFileCollection< Person > coll;
     coll.addItem( Person( "One", 1 ) );
     coll.addItem( Person( "Two", 2 ) );
     coll.addItem( Person( "Three", 3 ) );
@@ -280,9 +280,9 @@ void test_JsonSave::Coll_Iterate()
     QCOMPARE( tmp._name.c_str(), "Three" );
     QVERIFY( tmp._age == 3 );
 }
-void test_JsonSave::Coll_AddAndRemove()
+void test_JsonSave::AddAndRemoveColl()
 {
-    JsonFileDataCollection< Person > coll;
+    JsonFileCollection< Person > coll;
     coll.addItem( Person( "One", 1 ) );
     QVERIFY( coll.count() == 1 );
     coll.RemoveItem( Person( "One", 1 ) );
