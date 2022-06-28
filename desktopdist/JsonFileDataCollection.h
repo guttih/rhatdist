@@ -4,10 +4,9 @@
 #include <vector>
  #include "AbstractJsonFileDataCollection.h"
 template< typename T >
-class JsonFileDataCollection //: public AbstractJsonFileDataCollection
+class JsonFileDataCollection : public JsonFileData< T >
 {
 private:
-    std::string _filename;
 
 public:
     JsonFileDataCollection()
@@ -15,21 +14,13 @@ public:
     };
     JsonFileDataCollection( std::string filename )
     {
-        setFilename( filename );
+        this->setFilename( filename );
     };
 
-    void setFilename( std::string filename )
-    {
-        _filename = filename;
-    };
     ~JsonFileDataCollection()
     {
     };
 
-    std::string getFilename()
-    {
-        return _filename;
-    }
 
     // virtual bool setFromJson( const char *jsonString );
     // virtual String toJsonString() const;
@@ -40,14 +31,6 @@ public:
     void addItem( T const item )
     {
         _list.push_back( item );
-        // _itStepping=_list.begin();
-        // if( _itStepping != _list.end() )
-        // {
-        //     item->_name=( *_itStepping )._name;
-        //     item->_age= ( *_itStepping )._age;
-        //     return true;
-        // }
-        // return false;
     }
     void print()
     {
@@ -150,35 +133,6 @@ public:
         return false;
     }
 
-    bool save( const char *filename = NULL )
-    {
-        std::string fName=filename ? filename : getFilename();
-        FILE * fp;
-        fp = fopen(  fName.c_str(), "w" );
-        if( !fp )
-            return false;
-        int cnt = fprintf( fp, "%s ", toJsonString().c_str() );
-        fclose( fp );
-        return cnt > 0;
-    }
-
-    std::string fileToString( const char *fileName )
-    {
-        ifstream inFile;
-        inFile.open( fileName ); //open the input file
-
-        stringstream strStream;
-        strStream << inFile.rdbuf(); //read the file
-
-        return strStream.str();
-
-    }
-
-    bool load( const char *filename = NULL )
-    {
-        std::string fName=filename ? filename : getFilename();
-        return setFromJson( fileToString( fName.c_str() ).c_str() );
-    }
 
 private:
     typename std::vector< T > _list;
