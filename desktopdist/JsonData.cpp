@@ -434,6 +434,11 @@ JsonData *JsonData::value( String *valuesString, JsonData *parent )
                 return setRootInvalid();
             pNewObject = new JsonData( strValue, valType, valType, parent );
             return pNewObject;
+
+        case JSONTYPE_INVALID:
+        case JSONTYPE_KEY_VALUE:
+        case JSONTYPE_FLOAT:
+            return NULL;
         default:
             return NULL;
     }
@@ -698,6 +703,8 @@ bool JsonData::validateValue( const JSONTYPE jsonValueType, String stringValue )
             return true;//all strings are valid
         case JSONTYPE_INVALID:
             return false;
+        default:
+            return false;
     }
 
     return false;
@@ -824,6 +831,9 @@ String JsonData::toString()
             str += valueToString().c_str();
             break;
 
+        case JSONTYPE_INVALID:
+            return "";
+
         default:            //this should never happen
             return "";
     }
@@ -892,6 +902,8 @@ String JsonData::jsonTypeString( const JSONTYPE type )
         case JSONTYPE_NULL:
             return "JSONTYPE_NULL";
         case JSONTYPE_INVALID:
+            return "JSONTYPE_INVALID";
+        default:
             return "JSONTYPE_INVALID";
     }
 
@@ -984,6 +996,8 @@ JSONTYPE JsonData::getType( String strValue )
                 return JSONTYPE_NULL;
             else
                 return JSONTYPE_INVALID;
+        default:
+            break;
     }
 
     //check for numbers
@@ -1354,7 +1368,7 @@ float JsonData::getValueAsFloat()
     if( mType == JSONTYPE_FLOAT || mType == JSONTYPE_ULONG || mType == JSONTYPE_LONG )
         return mValue.toFloat();
 
-    return JSONDATA_ERRORNUMBER; //999999999
+    return (float)(int)JSONDATA_ERRORNUMBER; //999999999
 }
 
 /// <summary>

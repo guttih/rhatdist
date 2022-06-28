@@ -9,6 +9,8 @@
 #include <bitset>
 using namespace std;
 
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+
 enum NUMBER_TYPE
 {
     DEC,
@@ -54,6 +56,7 @@ public:
 
     String( long number, NUMBER_TYPE type )
     {
+        
         stringstream stream;
         switch( type )
         {
@@ -70,6 +73,8 @@ public:
 
             case NUMBER_TYPE::DEC:
                 stream << std::to_string( number );
+                break;
+            default:
                 break;
 
         }
