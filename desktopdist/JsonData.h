@@ -10,7 +10,7 @@
 /// The errornumber to return when a numberfunction fails;
 /// Like: getValueAsInt(), toFloat(), getValueAsLong(), getValueAsULong()
 /// </summary>
-#define JSONDATA_ERRORNUMBER 999999999;
+#define JSONDATA_ERRORNUMBER 999999999
 
 //See informanation on JSON on https://www.json.org (nice pictures)
 //See more info here : https://www.crockford.com/mckeeman.html

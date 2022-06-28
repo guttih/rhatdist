@@ -12,6 +12,7 @@ DEPENDPATH += $$SRC
 TEMPLATE = app
 
 SOURCES += \
+        $$SRC_RELATIVE/Student.cpp \
         $$SRC_RELATIVE/Person.cpp \
         $$SRC_RELATIVE/AbstractJsonFileData.cpp \
         $$SRC_RELATIVE/String.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 HEADERS += \
         $$SRC_RELATIVE/JsonFile.h \
         $$SRC_RELATIVE/JsonFileCollection.h \
+        $$SRC_RELATIVE/Student.h \
         $$SRC_RELATIVE/Person.h \
         $$SRC_RELATIVE/AbstractJsonFileData.h \
         $$SRC_RELATIVE/IJsonFileData.h \

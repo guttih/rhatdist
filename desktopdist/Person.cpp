@@ -18,8 +18,7 @@ Person::Person( std::string name, int age )
 
 Person::Person( const Person &rhs )
 {
-    set( rhs._name, rhs._age ); //todo: Next line should be activated instead of this one watch out for calling virtual function from constructor
-    // setFromJson( rhs.toJsonString().c_str() ); //Error: Why does this fail?  Is it because AbstractJsonFileData::toJsonString() is called instead of Person::toJsonString()
+    setFromJson( rhs.toJsonString().c_str() );
 }
 
 Person::~Person()

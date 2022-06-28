@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <fstream>
 #include "Person.h"
+#include "Student.h"
 #include "String.h"
 #include "JsonFile.h"
 #include "JsonFileCollection.h"
@@ -23,17 +24,20 @@ private slots:
     void cleanupTestCase();
 
     void ReadJsonExampleFile();
-    void GetAndGet();
-    void SetAndGetColl();
-    void SaveAndLoad();
-    void SaveAndLoadColl();
-    void SaveAndLoadColl2();
-    void CopyConstructor();
-    void ComparisonOperators();
-    void AddAndSaveColl();
-    void RemoveAndSaveColl();
-    void AddAndRemoveColl();
-    void IterateColl();
+    void GetAndSetPerson();
+    void GetAndSetStudent();
+    void SetAndGetPersonColl();
+    void SetAndGetStudentColl();
+    void SaveAndLoadPerson();
+    void SaveAndLoadPersonColl();
+    void SaveAndLoadPersonColl2();
+    void CopyConstructorPerson();
+    void ComparisonOperatorsPerson();
+    void AddAndSaveCollPerson();
+    void AddAndSaveCollStudent();
+    void RemoveAndSavePersonColl();
+    void AddAndRemovePersonColl();
+    void IteratePersonColl();
 
 };
 
@@ -79,7 +83,7 @@ void test_JsonSave::ReadJsonExampleFile()
 
 
 
-void test_JsonSave::GetAndGet()
+void test_JsonSave::GetAndSetPerson()
 {
     JsonFile< Person > jf;
     jf.setFilename( "person.json" );
@@ -89,7 +93,17 @@ void test_JsonSave::GetAndGet()
     QCOMPARE( jf.toJsonString().c_str(), orgJsonStr.c_str() );
 
 }
-void test_JsonSave::SetAndGetColl()
+void test_JsonSave::GetAndSetStudent()
+{
+    JsonFile< Student > jf;
+    jf.setFilename( "student.json" );
+    String orgJsonStr="{\"name\":\"tveir\",\"age\":2,\"enrolled\":1998}";
+    QCOMPARE( jf.getFilename().c_str(), "student.json" );
+    QVERIFY( jf.setFromJson( orgJsonStr.c_str() ) );
+    QCOMPARE( jf.toJsonString().c_str(), orgJsonStr.c_str() );
+
+}
+void test_JsonSave::SetAndGetPersonColl()
 {
     JsonFileCollection< Person > coll;
     QVERIFY( coll.count() == 0 );
@@ -97,12 +111,25 @@ void test_JsonSave::SetAndGetColl()
     bool success = coll.setFromJson( orgJsonStr.c_str() );
     QVERIFY( coll.count() == 2 );
     String actualStr=coll.toJsonString();
-    // qDebug( "\norgJsonStr:%s\nactualStr :%s\n", orgJsonStr.c_str(), actualStr.c_str() );
     QVERIFY( success );
     QVERIFY( actualStr == orgJsonStr );
 }
 
-void test_JsonSave:: CopyConstructor()
+void test_JsonSave::SetAndGetStudentColl()
+{
+    JsonFileCollection< Student > coll;
+    QVERIFY( coll.count() == 0 );
+    String orgJsonStr="[{\"name\":\"Gudjon\",\"enrolled\":1998,\"age\":51},{\"name\":\"Orri\",\"age\":12,\"enrolled\":2019}]";
+    bool success = coll.setFromJson( orgJsonStr.c_str() );
+    QVERIFY( coll.count() == 2 );
+    String actualStr=coll.toJsonString();
+    QVERIFY( success );
+
+    //enrolled will always be last attribute so we need to check like this
+    QVERIFY( actualStr == String( "[{\"name\":\"Gudjon\",\"age\":51,\"enrolled\":1998},{\"name\":\"Orri\",\"age\":12,\"enrolled\":2019}]" ).c_str() );
+}
+
+void test_JsonSave:: CopyConstructorPerson()
 {
     Person gudjon( "Gudjon", 51 );
     Person orri( "Orri", 12 );
@@ -117,7 +144,7 @@ void test_JsonSave:: CopyConstructor()
     QVERIFY( gudjon == orri );
 }
 
-void test_JsonSave::SaveAndLoad()
+void test_JsonSave::SaveAndLoadPerson()
 {
     Person person;
     person._name="Gudjon"; person._age=57;
@@ -129,8 +156,9 @@ void test_JsonSave::SaveAndLoad()
     obj._age=0;
     QVERIFY( obj.load() );
     QVERIFY( person.toJsonString() == obj.toJsonString() );
+    QVERIFY( person == obj );
 }
-void test_JsonSave::SaveAndLoadColl()
+void test_JsonSave::SaveAndLoadPersonColl()
 {
     Person person;
     person._name="Gudjon"; person._age=51;
@@ -146,7 +174,7 @@ void test_JsonSave::SaveAndLoadColl()
     QVERIFY( person == second );
 }
 
-void test_JsonSave::SaveAndLoadColl2()
+void test_JsonSave::SaveAndLoadPersonColl2()
 {
     QString filename="coll-person.json";
 
@@ -167,7 +195,7 @@ void test_JsonSave::SaveAndLoadColl2()
     QVERIFY( coll.count() == 2 );
 }
 
-void test_JsonSave::AddAndSaveColl()
+void test_JsonSave::AddAndSaveCollPerson()
 {
     QString filename="coll-persons.json";
     Person p( "Sigurborg", 45 );
@@ -197,11 +225,42 @@ void test_JsonSave::AddAndSaveColl()
     p._age=45;
     QVERIFY( p == test );
     QVERIFY( !( p != test ) );
+}
 
+void test_JsonSave::AddAndSaveCollStudent()
+{
+    QString filename="coll-student.json";
+    Student s( "Sigurborg", 45, 1990 );
+
+    JsonFileCollection< Student > coll( filename.toStdString().c_str() );
+
+    QVERIFY( coll.count() == 0 );
+    coll.addItem( s );
+    QVERIFY( coll.count() == 1 );
+    QVERIFY( coll.save() == true );
+    coll.clear();
+    QVERIFY( coll.count() == 0 );
+    coll.load();
+    QVERIFY( coll.count() == 1 );
+    Student test;
+    coll.getFirstItem( &test );
+    QVERIFY( test == s );
+    QCOMPARE( test.toJsonString().c_str(), s.toJsonString().c_str() );
+
+    //Test comparison operators
+    QVERIFY( s == test );
+    s._enrolled=33;
+    QVERIFY( !( s == test ) );
+
+    //Test not equal operator
+    QVERIFY( s != test );
+    s._age=45; s._enrolled=1990;
+    QVERIFY( s == test );
+    QVERIFY( !( s != test ) );
 }
 
 
-void test_JsonSave::ComparisonOperators()
+void test_JsonSave::ComparisonOperatorsPerson()
 {
     Person p1( "Sigurborg", 45 ), p2( "Sigurborg", 45 );
 
@@ -224,7 +283,7 @@ void test_JsonSave::ComparisonOperators()
 }
 
 
-void test_JsonSave::RemoveAndSaveColl()
+void test_JsonSave::RemoveAndSavePersonColl()
 {
     JsonFileCollection< Person > coll( "coll-persons.json" );
     QVERIFY( coll.count() == 0 );
@@ -256,7 +315,7 @@ void test_JsonSave::RemoveAndSaveColl()
 }
 
 
-void test_JsonSave::IterateColl()
+void test_JsonSave::IteratePersonColl()
 {
     JsonFileCollection< Person > coll;
     coll.addItem( Person( "One", 1 ) );
@@ -280,7 +339,7 @@ void test_JsonSave::IterateColl()
     QCOMPARE( tmp._name.c_str(), "Three" );
     QVERIFY( tmp._age == 3 );
 }
-void test_JsonSave::AddAndRemoveColl()
+void test_JsonSave::AddAndRemovePersonColl()
 {
     JsonFileCollection< Person > coll;
     coll.addItem( Person( "One", 1 ) );
