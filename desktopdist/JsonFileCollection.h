@@ -1,31 +1,24 @@
-#ifndef JsonFileDataCollection_H
-#define JsonFileDataCollection_H
+#ifndef JsonFileCollection_H
+#define JsonFileCollection_H
 #include <vector>
 template< typename T >
-class JsonFileDataCollection : public JsonFileData< T >
+class JsonFileCollection : public JsonFile< T >
 {
 private:
 
 public:
-    JsonFileDataCollection()
+    JsonFileCollection()
     {
     };
-    JsonFileDataCollection( std::string filename )
+    JsonFileCollection( std::string filename )
     {
         this->setFilename( filename );
     };
 
-    ~JsonFileDataCollection()
+    ~JsonFileCollection()
     {
     };
 
-
-    // virtual bool setFromJson( const char *jsonString );
-    // virtual String toJsonString() const;
-    // virtual ~JsonFileDataCollection();
-
-    // unsigned int count();
-    // void clearData();
     void addItem( T const item )
     {
         _list.push_back( item );
@@ -139,7 +132,7 @@ private:
 
 
 // template< typename T >
-// JsonFileDataCollection::~JsonFileDataCollection()
+// JsonFileCollection::~JsonFileCollection()
 // {
 //     _list.clear();
 

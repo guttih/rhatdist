@@ -1,15 +1,15 @@
-#ifndef JsonFileData_H
-#define JsonFileData_H
+#ifndef JsonFile_H
+#define JsonFile_H
 #include <iostream>
 
 template< typename T >
-class JsonFileData : public T
+class JsonFile : public T
 {
 private:
     std::string _filename;
 
 public:
-    JsonFileData()
+    JsonFile()
     {
     };
 
@@ -42,9 +42,7 @@ public:
 
         stringstream strStream;
         strStream << inFile.rdbuf(); //read the file
-
         return strStream.str();
-
     }
 
     bool load( const char *filename = NULL )
@@ -54,8 +52,5 @@ public:
     }
 
 };
-
-
-
 
 #endif
