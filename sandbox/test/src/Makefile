@@ -1,5 +1,5 @@
 # File src/Makefile created 2022-06-28 21:28:57.
-SRC_DIR=/root/repos/rhatdist/sandbox/test/src
+SRC_DIR=/home/gudjon/repos/personal/rhatdist/sandbox/test/src
 # specify where the source code and includes are located
 INCLUDE_DIRS=$(SRC_DIR)/code
 SRC_DIRS=$(SRC_DIR)

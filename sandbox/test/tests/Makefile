@@ -1,6 +1,6 @@
 #  File Makefile, created 2022-06-28 22:29:44.
 # we don’t want to use relative paths, so we set these variables
-PROJECT_DIR=/root/repos/rhatdist/sandbox/test
+PROJECT_DIR=/home/gudjon/repos/personal/rhatdist/sandbox/test
 SRC_DIR=$(PROJECT_DIR)/src/code
 TEST_DIR=$(PROJECT_DIR)/tests
 # specify where the source code and includes are located

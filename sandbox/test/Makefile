@@ -1,5 +1,5 @@
 #  File Makefile, created 2022-06-28 22:29:44.
-PROJECT_DIR=/root/repos/rhatdist/sandbox/test
+PROJECT_DIR=/home/gudjon/repos/personal/rhatdist/sandbox/test
 SRC_DIR=$(PROJECT_DIR)/src
 TEST_DIR=$(PROJECT_DIR)/tests
 CODE_DIR=$(PROJECT_DIR)/src/code
@@ -28,8 +28,11 @@ testCodeExample.o:
 build:
 	make -C app
 
-main: testCodeExample.o
-	gcc -I$(CODE_DIR) $(CODE_DIR)/testCodeExample.o $(SRC_DIR)/$(OUT).cpp -o $(SRC_DIR)/$(OUT)
+#main: testCodeExample.o
+#	gcc -I$(CODE_DIR) $(CODE_DIR)/testCodeExample.o $(SRC_DIR)/$(OUT).cpp -o $(SRC_DIR)/$(OUT)
+
+main:
+	make -C $(SRC_DIR) main
 
 all: test main
 
@@ -38,8 +41,12 @@ testcov: test coverage
 
 clean_coverage:
 	rm -rf $(COVERAGE_DIR)
-coverage: clean_coverage
+
+coverageFirst: clean_coverage
 	mkdir $(COVERAGE_DIR); lcov --capture --directory . --output-file $(COVERAGE_DIR)/coverage.info; genhtml $(COVERAGE_DIR)/coverage.info --output-directory $(COVERAGE_DIR) && echo -ne "To open report give command\n  xdg-open $(COVERAGE_DIR)/index.html\n"
 
-clean: test_clean
+coverage: coverageFirst
+	lcov --remove $(COVERAGE_DIR)/coverage.info '/usr/include/*'   --output-file $(COVERAGE_DIR)/coverage2.info;genhtml $(COVERAGE_DIR)/coverage2.info --output-directory $(COVERAGE_DIR)
+
+clean: test_clean clean_coverage
 	rm $(SRC_DIR)/*.o $(CODE_DIR)/*.o $(OUT)
