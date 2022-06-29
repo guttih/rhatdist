@@ -65,7 +65,7 @@ CopyFiles(){
     shift; shift
     for e; do 
         echo "cp $FROM/${highlight}$e${norm} $TO"
-        #echo "cp $FROM/$e $TO"
+        cp "$FROM/$e" "$TO"
     done
 }
  echo "Copying files from $FROM_DIR to $TO_DIR"

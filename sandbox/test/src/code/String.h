@@ -18,6 +18,7 @@ enum NUMBER_TYPE
     HEX
 };
 
+
 class String
 {
 private:
