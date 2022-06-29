@@ -34,7 +34,7 @@ build:
 main:
 	make -C $(SRC_DIR) main
 
-all: test main
+all: test main coverage
 
 testcov: test coverage
 	xdg-open $(COVERAGE_DIR)/index.html
