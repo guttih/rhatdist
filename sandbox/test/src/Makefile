@@ -16,11 +16,21 @@ $(info    SRC_DIRS:$(SRC_DIRS))
 
 clean:
 	rm $(SRC_DIR)/*.o $(CODE_DIR)/*.o $(OUT)
+
 code.o:
 	gcc -c -I$(CODE_DIR) $(CODE_DIR)/testCodeExample.cpp -o $(CODE_DIR)/code.o
+
 Json.o:
 	gcc -c -I$(CODE_DIR) $(CODE_DIR)/Json.cpp -o $(CODE_DIR)/Json.o   -lstdc++
+
 JsonData.o:
 	gcc -c -I$(CODE_DIR) $(CODE_DIR)/JsonData.cpp -o $(CODE_DIR)/JsonData.o   -lstdc++
-main: JsonData.o Json.o code.o 
-	gcc -I$(SRC_DIR) -I$(CODE_DIR) $(CODE_DIR)/code.o $(CODE_DIR)/JsonData.o $(CODE_DIR)/Json.o $(SRC_DIR)/$(OUT).cpp -o $(OUT)  -lstdc++
+
+AbstractJsonFileData.o:
+	gcc -c -I$(CODE_DIR) $(CODE_DIR)/AbstractJsonFileData.cpp -o $(CODE_DIR)/AbstractJsonFileData.o   -lstdc++
+
+Person.o: AbstractJsonFileData.o
+	gcc -c -I$(CODE_DIR) $(CODE_DIR)/Person.cpp -o $(CODE_DIR)/Person.o   -lstdc++
+
+main: JsonData.o Json.o code.o Person.o
+	gcc -I$(SRC_DIR) -I$(CODE_DIR) $(CODE_DIR)/code.o $(CODE_DIR)/JsonData.o $(CODE_DIR)/Json.o $(CODE_DIR)/AbstractJsonFileData.o $(CODE_DIR)/Person.o $(SRC_DIR)/$(OUT).cpp -o $(OUT)  -lstdc++

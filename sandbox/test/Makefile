@@ -16,6 +16,9 @@ $(info    OUT:$(OUT))
 $(info    TEST_TARGET:$(TEST_TARGET))
 $(info    COVERAGE_DIR:$(COVERAGE_DIR))
 
+copy_files:
+	$(PROJECT_DIR)/../copyCodeToTest.sh 
+
 test:
 	make -C $(TEST_DIR)
 
@@ -34,7 +37,7 @@ build:
 main:
 	make -C $(SRC_DIR) main
 
-all: test main coverage
+all: copy_files test main coverage
 
 testcov: test coverage
 	xdg-open $(COVERAGE_DIR)/index.html

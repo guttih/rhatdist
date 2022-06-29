@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-FILES_TO_COPY=( Json.h Json.cpp JsonData.h JsonData.cpp String.h )
+FILES_TO_COPY=( Json.h Json.cpp JsonData.h JsonData.cpp String.h IJsonFileData.h 
+                AbstractJsonFileData.h AbstractJsonFileData.cpp NotImplementedException.h
+                JsonFile.h JsonFileCollection.h Person.h Person.cpp Student.h Student.cpp
+)
 FROM_DIR=$(readlink -m $DIR/../desktopdist)
 TO_DIR=$(readlink -m $DIR/test/src/code/)
 
