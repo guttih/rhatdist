@@ -1,0 +1,4 @@
+# File .gitignore, created 2022-06-28 22:29:44.
+coverage
+objs
+app
